@@ -47,7 +47,7 @@ export const useCart = create<CartStore>()(
       totalItems: () => get().items.reduce((total, item) => total + item.quantity, 0),
     }),
     {
-      name: 'tornillos-am-cart', // Unique name for localstorage
+      name: 'tornillos-am-cart-storage',
     }
   )
 );
