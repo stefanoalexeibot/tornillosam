@@ -1,4 +1,5 @@
 import { MapPin, Phone, Mail, Facebook, Instagram, Linkedin } from "lucide-react"
+import { Link } from "react-router-dom"
 
 export function Footer() {
   return (
@@ -41,9 +42,9 @@ export function Footer() {
           <div>
             <h4 className="font-bold text-slate-900 mb-6">Empresa</h4>
             <ul className="space-y-3 text-sm text-slate-500">
-              <li><a href="#" className="hover:text-primary transition-colors">Nosotros</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Infraestructura</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Bolsa de Trabajo</a></li>
+              <li><Link to="/nosotros" className="hover:text-primary transition-colors">Nosotros</Link></li>
+              <li><Link to="/servicios" className="hover:text-primary transition-colors">Servicios</Link></li>
+              <li><Link to="/contacto" className="hover:text-primary transition-colors">Ubicación</Link></li>
               <li><a href="#" className="hover:text-primary transition-colors">Blog Industrial</a></li>
             </ul>
           </div>
