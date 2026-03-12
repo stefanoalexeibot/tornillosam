@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +13,8 @@ import {
   Send,
   MessageCircle,
   Linkedin,
-  Facebook
+  Facebook,
+  ArrowRight
 } from "lucide-react";
 
 export default function ContactPage() {
@@ -140,8 +142,7 @@ export default function ContactPage() {
       </main>
       
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 }
-
-import { ArrowRight } from "lucide-react";

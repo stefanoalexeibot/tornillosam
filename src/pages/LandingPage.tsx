@@ -7,6 +7,7 @@ import { Process } from "@/components/Process"
 import { Markets } from "@/components/Markets"
 import { Infrastructure } from "@/components/Infrastructure"
 import { Footer } from "@/components/Footer"
+import { WhatsAppButton } from "@/components/WhatsAppButton"
 
 export default function LandingPage() {
   return (
@@ -20,6 +21,7 @@ export default function LandingPage() {
       <Markets />
       <Infrastructure />
       <Footer />
+      <WhatsAppButton />
     </div>
   )
 }

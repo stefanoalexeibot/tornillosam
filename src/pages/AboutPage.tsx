@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { Badge } from "@/components/ui/badge";
 import { 
   History, 
@@ -130,6 +131,7 @@ export default function AboutPage() {
       </main>
       
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 }

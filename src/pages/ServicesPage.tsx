@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -172,6 +173,7 @@ export default function ServicesPage() {
       </main>
       
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 }

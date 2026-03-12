@@ -7,6 +7,8 @@ export interface Product {
   finish: string;
   sku: string;
   image?: string;
+  price?: number;
+  currency?: string;
 }
 
 export const MOCK_PRODUCTS: Product[] = [
