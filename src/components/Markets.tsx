@@ -18,17 +18,13 @@ export function Markets() {
         
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
           {markets.map((market, index) => (
-            <div key={index} className="group relative aspect-[4/5] rounded-2xl overflow-hidden cursor-pointer">
-              <img 
-                src={market.image} 
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                alt={market.name}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity"></div>
+            <div key={index} className="group relative aspect-[4/5] rounded-2xl overflow-hidden cursor-pointer bg-slate-100 border-2 border-dashed border-slate-200 flex items-center justify-center">
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity"></div>
               <div className="absolute bottom-6 left-6 right-6">
-                <h3 className="text-white font-bold text-lg md:text-xl tracking-tight">{market.name}</h3>
+                <h3 className="text-slate-900 font-bold text-lg md:text-xl tracking-tight group-hover:text-primary transition-colors">{market.name}</h3>
                 <div className="w-8 h-1 bg-primary mt-2 rounded-full transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </div>
+              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Espacio para Imagen</span>
             </div>
           ))}
         </div>

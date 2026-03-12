@@ -8,12 +8,8 @@ export function Infrastructure() {
       
       <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
         <div className="relative">
-          <div className="aspect-video bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 shadow-2xl relative z-10">
-            <img 
-              src="https://images.unsplash.com/photo-1504917595217-d4dc5f582bb4?q=80&w=2000&auto=format&fit=crop" 
-              className="w-full h-full object-cover opacity-80"
-              alt="Machinery workshop"
-            />
+          <div className="aspect-video bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 shadow-2xl relative z-10 flex items-center justify-center">
+            <div className="text-slate-500 text-sm font-medium">Contenido Visual: Taller Haas / Maquinado</div>
           </div>
           <div className="absolute -top-6 -right-6 w-32 h-32 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute -bottom-6 -left-6 p-6 bg-primary rounded-xl shadow-xl z-20 hidden md:block">

@@ -57,12 +57,8 @@ export function Hero() {
         </div>
         
         <div className="relative">
-          <div className="aspect-square bg-slate-200 rounded-3xl overflow-hidden shadow-2xl relative">
-            <img 
-              src="https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?q=80&w=2000&auto=format&fit=crop" 
-              alt="Industrial Fasteners"
-              className="object-cover w-full h-full hover:scale-105 transition-transform duration-700"
-            />
+          <div className="aspect-square bg-slate-100 rounded-3xl overflow-hidden shadow-2xl relative flex items-center justify-center border-2 border-dashed border-slate-200">
+            <div className="text-slate-400 text-sm font-medium">Imagen Hero (Tornillería)</div>
             <div className="absolute inset-0 bg-primary/5 mix-blend-multiply"></div>
           </div>
           {/* Decorative element */}
