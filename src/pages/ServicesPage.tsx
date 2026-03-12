@@ -164,7 +164,7 @@ export default function ServicesPage() {
                 </Button>
                 <div className="text-left">
                   <p className="text-sm font-bold uppercase tracking-widest text-primary-foreground/50 mb-1">O llámanos directo:</p>
-                  <p className="text-2xl font-black">+52 (81) 1234-5678</p>
+                  <p className="text-2xl font-black">+52 (81) 2198-0008</p>
                 </div>
               </div>
             </div>
