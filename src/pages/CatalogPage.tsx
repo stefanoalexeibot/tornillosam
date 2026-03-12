@@ -183,7 +183,7 @@ export default function CatalogPage() {
               <div className="space-y-4 bg-white p-5 rounded-3xl border border-slate-200">
                 <div className="space-y-2">
                   <span className="text-xs font-bold text-slate-400">Material</span>
-                  <Select value={selectedMaterial} onValueChange={setSelectedMaterial}>
+                  <Select value={selectedMaterial} onValueChange={(val) => setSelectedMaterial(val || "all")}>
                     <SelectTrigger className="bg-slate-50 border-slate-100">
                       <SelectValue placeholder="Cualquier material" />
                     </SelectTrigger>
