@@ -1,10 +1,24 @@
 import { Button } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Search } from "lucide-react"
 import { motion } from "framer-motion"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { fadeInUp, staggerContainer } from "@/lib/animations"
+import { useState } from "react"
+import { Input } from "@/components/ui/input"
 
 export function Hero() {
+  const [searchQuery, setSearchQuery] = useState("")
+  const navigate = useNavigate()
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      navigate(`/catalogo?q=${encodeURIComponent(searchQuery.trim())}`)
+    } else {
+      navigate("/catalogo")
+    }
+  }
+
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-white">
       {/* Animated gradient background */}
@@ -55,16 +69,32 @@ export function Hero() {
               Especialistas en tornillería, birlos y fijaciones de alta resistencia. Acceso instantáneo a más de <strong className="text-slate-800">13,000 SKUs</strong> con calidad certificada.
             </motion.p>
 
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4">
-              <Link to="/catalogo">
-                <Button className="h-16 px-10 rounded-2xl font-black text-lg gap-3 shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/30 hover:scale-105 active:scale-95 transition-all duration-300 w-full sm:w-auto">
-                  Ver Catálogo Completo <ArrowRight className="w-5 h-5" />
-                </Button>
-              </Link>
-              <Link to="/contacto">
-                <Button variant="outline" className="h-16 px-10 rounded-2xl font-black text-lg border-2 border-slate-200 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all duration-300 w-full sm:w-auto">
-                  Contactar Ventas
-                </Button>
+            <motion.form
+              variants={fadeInUp}
+              onSubmit={handleSearch}
+              className="flex flex-col sm:flex-row gap-3"
+            >
+              <div className="relative flex-1">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                <Input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Busca por medida o SKU (ej: M8x40, pija 8x1)"
+                  className="pl-12 h-16 rounded-2xl text-base border-2 border-slate-200 focus:border-primary/50 bg-white shadow-sm w-full"
+                />
+              </div>
+              <Button
+                type="submit"
+                className="h-16 px-8 rounded-2xl font-black text-base gap-2 shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/30 hover:scale-105 active:scale-95 transition-all duration-300 whitespace-nowrap"
+              >
+                Buscar <ArrowRight className="w-4 h-4" />
+              </Button>
+            </motion.form>
+
+            <motion.div variants={fadeInUp}>
+              <Link to="/contacto" className="text-sm font-bold text-slate-400 hover:text-primary transition-colors flex items-center gap-1">
+                ¿No encuentras lo que buscas? Contáctanos directamente →
               </Link>
             </motion.div>
 

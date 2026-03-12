@@ -3,7 +3,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { 
   Search, 
   Filter, 
@@ -42,7 +42,8 @@ interface Product {
 }
 
 export default function CatalogPage() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchParams] = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState(searchParams.get("q") ?? "");
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [materials, setMaterials] = useState<string[]>([]);
@@ -51,6 +52,12 @@ export default function CatalogPage() {
   const [loading, setLoading] = useState(true);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const { addItem } = useCart();
+
+  // Sync URL param on first load
+  useEffect(() => {
+    const q = searchParams.get("q");
+    if (q) setSearchTerm(q);
+  }, [searchParams]);
 
   useEffect(() => {
     async function fetchData() {
