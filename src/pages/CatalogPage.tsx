@@ -3,6 +3,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { 
   Search, 
   Filter, 
@@ -251,9 +252,16 @@ export default function CatalogPage() {
                           <p className="text-[10px] font-black text-slate-300 tracking-tighter uppercase">{product.sku}</p>
                         </div>
                         
-                        <h3 className="font-extrabold text-slate-900 leading-snug group-hover:text-primary transition-colors line-clamp-2 min-h-[3rem]">
-                          {product.name}
-                        </h3>
+                         <Link to={`/producto/${product.sku}`} className="block">
+                          <h3 className="font-extrabold text-slate-900 leading-snug group-hover:text-primary transition-colors line-clamp-2 min-h-[3rem]">
+                            {product.name}
+                          </h3>
+                        </Link>
+                        <div className="flex items-center gap-1 mt-1">
+                          <Link to={`/producto/${product.sku}`} className="text-[10px] font-black text-primary/60 hover:text-primary flex items-center gap-0.5 transition-colors">
+                            Ver ficha técnica <ChevronRight className="w-3 h-3" />
+                          </Link>
+                        </div>
                       </div>
 
                       {/* Detalles Tecnicos */}
