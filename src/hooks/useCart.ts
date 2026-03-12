@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import type { Product } from '@/lib/mock-data';
 
 interface CartItem extends Product {
@@ -14,32 +15,39 @@ interface CartStore {
   totalItems: () => number;
 }
 
-export const useCart = create<CartStore>((set, get) => ({
-  items: [],
-  addItem: (product, quantity) => {
-    const items = get().items;
-    const existingItem = items.find((i) => i.id === product.id);
+export const useCart = create<CartStore>()(
+  persist(
+    (set, get) => ({
+      items: [],
+      addItem: (product, quantity) => {
+        const items = get().items;
+        const existingItem = items.find((i) => i.id === product.id);
 
-    if (existingItem) {
-      set({
-        items: items.map((i) =>
-          i.id === product.id ? { ...i, quantity: i.quantity + quantity } : i
-        ),
-      });
-    } else {
-      set({ items: [...items, { ...product, quantity }] });
+        if (existingItem) {
+          set({
+            items: items.map((i) =>
+              i.id === product.id ? { ...i, quantity: i.quantity + quantity } : i
+            ),
+          });
+        } else {
+          set({ items: [...items, { ...product, quantity }] });
+        }
+      },
+      removeItem: (productId) => {
+        set({ items: get().items.filter((i) => i.id !== productId) });
+      },
+      updateQuantity: (productId, quantity) => {
+        set({
+          items: get().items.map((i) =>
+            i.id === productId ? { ...i, quantity: Math.max(1, quantity) } : i
+          ),
+        });
+      },
+      clearCart: () => set({ items: [] }),
+      totalItems: () => get().items.reduce((total, item) => total + item.quantity, 0),
+    }),
+    {
+      name: 'tornillos-am-cart', // Unique name for localstorage
     }
-  },
-  removeItem: (productId) => {
-    set({ items: get().items.filter((i) => i.id !== productId) });
-  },
-  updateQuantity: (productId, quantity) => {
-    set({
-      items: get().items.map((i) =>
-        i.id === productId ? { ...i, quantity: Math.max(1, quantity) } : i
-      ),
-    });
-  },
-  clearCart: () => set({ items: [] }),
-  totalItems: () => get().items.reduce((total, item) => total + item.quantity, 0),
-}));
+  )
+);

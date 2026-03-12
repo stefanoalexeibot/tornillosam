@@ -1,19 +1,66 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Filter, Plus, Package } from "lucide-react";
-import { MOCK_PRODUCTS } from "@/lib/mock-data";
+import { Search, Filter, Plus, Package, Loader2 } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { supabase } from "@/lib/supabase";
+
+interface Product {
+  id: string;
+  name: string;
+  category: string;
+  material: string;
+  grade: string;
+  finish: string;
+  sku: string;
+}
 
 export default function CatalogPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const { addItem } = useCart();
 
-  const filteredProducts = MOCK_PRODUCTS.filter(product => 
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from('products')
+          .select(`
+            *,
+            categories (name)
+          `);
+        
+        if (error) throw error;
+        
+        if (data) {
+          const mapped = data.map((p: any) => ({
+            id: p.id,
+            name: p.name,
+            category: p.categories?.name || 'General',
+            material: p.material || 'N/A',
+            grade: p.grade || 'N/A',
+            finish: p.finish || 'N/A',
+            sku: p.sku || 'N/A'
+          }));
+          setProducts(mapped);
+        }
+      } catch (err) {
+        console.error("Error fetching products:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProducts();
+  }, []);
+
+  const filteredProducts = products.filter(product => 
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     product.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
     product.category.toLowerCase().includes(searchTerm.toLowerCase())
@@ -59,11 +106,19 @@ export default function CatalogPage() {
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-2 text-slate-500 font-medium">
                 <Filter className="w-4 h-4" />
-                <span>Mostrando {filteredProducts.length} resultados</span>
+                <span>
+                  {loading ? 'Cargando catálogo...' : `Mostrando ${filteredProducts.length} resultados`}
+                </span>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {loading ? (
+              <div className="flex flex-col items-center justify-center py-24">
+                <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
+                <p className="text-slate-500 font-medium">Sincronizando con base de datos...</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map((product) => (
                 <Card key={product.id} className="group hover:border-primary/40 transition-all duration-300">
                   <CardContent className="p-0">
@@ -109,6 +164,7 @@ export default function CatalogPage() {
                 </Card>
               ))}
             </div>
+            )}
 
             {filteredProducts.length === 0 && (
               <div className="text-center py-24 bg-white rounded-3xl border border-dashed border-slate-200">
