@@ -13,8 +13,7 @@ import {
   Send,
   MessageCircle,
   Linkedin,
-  Facebook,
-  ArrowRight
+  Facebook
 } from "lucide-react";
 
 export default function ContactPage() {
@@ -84,9 +83,9 @@ export default function ContactPage() {
               <div className="space-y-10 py-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {[
-                    { title: "Ventas y Soporte", value: "+52 (81) 1234-5678", icon: Phone, color: "text-blue-500" },
-                    { title: "WhatsApp Directo", value: "81 2233-4455", icon: MessageCircle, color: "text-green-500" },
-                    { title: "Correo Oficial", value: "ventas@tornillosam.com", icon: Mail, color: "text-primary" },
+                    { title: "Ventas y Soporte", value: "+52 (81) 2198-0008", icon: Phone, color: "text-blue-500" },
+                    { title: "WhatsApp Directo", value: "+52 81 2198 0008", icon: MessageCircle, color: "text-green-500" },
+                    { title: "Correo Oficial", value: "a.luna@tornillosam.com", icon: Mail, color: "text-primary" },
                     { title: "Horarios", value: "Lun - Vie: 8am - 6pm", icon: Clock, color: "text-slate-900" }
                   ].map((item, idx) => (
                     <Card key={idx} className="bg-white border-none shadow-sm rounded-3xl p-6 group cursor-pointer hover:shadow-xl transition-all duration-300">
@@ -111,20 +110,23 @@ export default function ContactPage() {
                     <div>
                       <h3 className="text-lg font-black text-slate-900">Nuestra Planta</h3>
                       <p className="text-slate-500 text-sm leading-relaxed">
-                        Av. Industrial Monterrey #450, <br />
-                        Col. Los Parques, Santa Catarina, N.L. CP 66367
+                        Vicente Guerrero 2226, Quince de Mayo (Larralde),<br />
+                        64450 Monterrey, N.L.
                       </p>
                     </div>
                   </div>
                   
-                  {/* Fake Map Placeholder */}
-                  <div className="aspect-video w-full bg-slate-100 rounded-3xl overflow-hidden relative group cursor-pointer">
-                    <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=1000" className="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-500" alt="Mapa" />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <Button variant="secondary" className="bg-white text-slate-900 font-black shadow-2xl rounded-2xl gap-2">
-                        Abrir en Google Maps <ArrowRight className="w-4 h-4" />
-                      </Button>
-                    </div>
+                  {/* Google Maps Embed */}
+                  <div className="w-full rounded-3xl overflow-hidden" style={{height: '280px'}}>
+                    <iframe 
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3595.2827100086574!2d-100.31368468831434!3d25.695062077299536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x866295c8aadc8b43%3A0x819df94d6b8868bf!2sTornillos%20AM%20SA%20de%20CV!5e0!3m2!1ses-419!2smx!4v1773355754970!5m2!1ses-419!2smx"
+                      width="100%" 
+                      height="100%" 
+                      style={{border: 0}} 
+                      allowFullScreen 
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
                   </div>
                 </div>
 

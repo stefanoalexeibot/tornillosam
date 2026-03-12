@@ -55,16 +55,16 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <span className="text-sm text-slate-500">
-                  Guerrero 2226, 64450 Monterrey, N.L.
+                  Vicente Guerrero 2226, Quince de Mayo (Larralde), 64450 Monterrey, N.L.
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-primary shrink-0" />
-                <span className="text-sm text-slate-500">(81) 2900 0580</span>
+                <span className="text-sm text-slate-500">+52 (81) 2198-0008</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-primary shrink-0" />
-                <span className="text-sm text-slate-500">ventas@tornillosam.com</span>
+                <span className="text-sm text-slate-500">a.luna@tornillosam.com</span>
               </li>
             </ul>
           </div>
