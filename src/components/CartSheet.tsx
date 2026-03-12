@@ -10,16 +10,18 @@ export function CartSheet() {
 
   return (
     <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="outline" size="icon" className="relative h-10 w-10 border-slate-200">
-          <ShoppingCart className="h-5 w-5 text-slate-600" />
-          {totalItems() > 0 && (
-            <Badge className="absolute -top-2 -right-2 px-1.5 min-w-[20px] h-5 flex items-center justify-center bg-primary text-white border-white">
-              {totalItems()}
-            </Badge>
-          )}
-        </Button>
-      </SheetTrigger>
+      <SheetTrigger 
+        render={
+          <Button variant="outline" size="icon" className="relative h-10 w-10 border-slate-200">
+            <ShoppingCart className="h-5 w-5 text-slate-600" />
+            {totalItems() > 0 && (
+              <Badge className="absolute -top-2 -right-2 px-1.5 min-w-[20px] h-5 flex items-center justify-center bg-primary text-white border-white">
+                {totalItems()}
+              </Badge>
+            )}
+          </Button>
+        }
+      />
       <SheetContent className="w-full sm:max-w-md">
         <SheetHeader className="mb-6">
           <SheetTitle className="flex items-center gap-2">

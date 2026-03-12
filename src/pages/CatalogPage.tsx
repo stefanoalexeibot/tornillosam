@@ -4,7 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Filter, Plus, Package } from "lucide-react";
-import { MOCK_PRODUCTS, Product } from "@/lib/mock-data";
+import { MOCK_PRODUCTS } from "@/lib/mock-data";
 import { useCart } from "@/hooks/useCart";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
