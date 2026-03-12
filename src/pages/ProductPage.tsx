@@ -420,7 +420,7 @@ export default function ProductPage() {
                 </Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {relatedProducts.map((p, i) => (
+                {relatedProducts.map((p) => (
                   <motion.div key={p.id} whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
                     <Link to={`/producto/${p.sku}`}>
                       <div className="bg-white rounded-[24px] p-5 border border-slate-100 shadow-sm hover:shadow-xl hover:border-primary/20 transition-all group cursor-pointer">
