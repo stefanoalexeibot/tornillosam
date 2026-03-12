@@ -1,0 +1,18 @@
+{
+  "columns": [
+    "CLAVE",
+    "NOMBRE",
+    "$ LISTA",
+    "EMPAQUE",
+    "GRANEL",
+    "DESC",
+    "2024-10-02T00:00:00"
+  ],
+  "sample_data": [
+    {
+      "CLAVE": 1010002010,
+      "NOMBRE": "TOR SOCKET C/CILINDRO NGO NC - 2-56 x 3/16",
+      "$ LISTA": 6.4084,
+      "EMPAQUE": 250,
+      "GRANEL": 5000,
+      "DESC": 0.765

@@ -17,6 +17,8 @@ interface Product {
   grade: string;
   finish: string;
   sku: string;
+  price?: number;
+  currency?: string;
 }
 
 export default function CatalogPage() {
@@ -46,7 +48,9 @@ export default function CatalogPage() {
             material: p.material || 'N/A',
             grade: p.grade || 'N/A',
             finish: p.finish || 'N/A',
-            sku: p.sku || 'N/A'
+            sku: p.sku || 'N/A',
+            price: p.price,
+            currency: p.currency || 'MXN'
           }));
           setProducts(mapped);
         }
@@ -150,6 +154,15 @@ export default function CatalogPage() {
                           <span className="text-slate-500">Acabado</span>
                           <span className="font-bold text-slate-700">{product.finish}</span>
                         </div>
+                      </div>
+
+                      <div className="mb-6 flex items-baseline gap-1">
+                        <span className="text-2xl font-black text-primary">
+                          ${product.price?.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        </span>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                          {product.currency} / pza
+                        </span>
                       </div>
                       
                       <Button 
