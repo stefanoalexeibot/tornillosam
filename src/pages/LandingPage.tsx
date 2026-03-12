@@ -1,6 +1,10 @@
 import { Navbar } from "@/components/Navbar"
 import { Hero } from "@/components/Hero"
 import { Features } from "@/components/Features"
+import { Categories } from "@/components/Categories"
+import { Markets } from "@/components/Markets"
+import { Infrastructure } from "@/components/Infrastructure"
+import { Footer } from "@/components/Footer"
 
 export default function LandingPage() {
   return (
@@ -8,11 +12,10 @@ export default function LandingPage() {
       <Navbar />
       <Hero />
       <Features />
-      <footer className="py-12 bg-slate-50 border-t border-slate-100">
-        <div className="container mx-auto px-6 text-center text-slate-500 text-sm">
-          © 2024 Tornillos AM. Todos los derechos reservados.
-        </div>
-      </footer>
+      <Categories />
+      <Markets />
+      <Infrastructure />
+      <Footer />
     </div>
   )
 }
