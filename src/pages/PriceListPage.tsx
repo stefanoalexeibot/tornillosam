@@ -7,13 +7,15 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/lib/supabase";
 import { useSearchParams } from "react-router-dom";
 import * as XLSX from "xlsx";
-import {
+import { cn } from "@/lib/utils";
+import { applySmartSearch } from "@/lib/search-utils";
+import { useCart } from "@/hooks/useCart";
+import { 
+  Plus, Check, 
   Search, Lock, FileDown, Printer, Eye, EyeOff,
   ChevronLeft, ChevronRight, X, FileSpreadsheet,
   Building2, Phone, Mail, Lightbulb, Loader2,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { applySmartSearch } from "@/lib/search-utils";
 
 /* ─── Configuración ─────────────────────────────────────────── */
 const ACCESS_CODE   = import.meta.env.VITE_PRICELIST_CODE ?? "tornillos2024";
@@ -28,7 +30,16 @@ function fmt(n: number) {
   return n.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-interface Product { id: string; name: string; sku: string; category: string; price: number; }
+interface Product { 
+  id: string; 
+  name: string; 
+  sku: string; 
+  category: string; 
+  price: number;
+  material?: string;
+  grade?: string;
+  finish?: string;
+}
 
 const SEARCH_HINTS = [
   "tornillo hexagonal 1/2",
@@ -160,6 +171,7 @@ function PriceTable() {
   const [currentPage, setCurrentPage]       = useState(0);
   const [totalCount, setTotalCount]         = useState(0);
   const [showTips, setShowTips]             = useState(true);
+  const { addItem, items } = useCart();
   const [hintIdx, setHintIdx]               = useState(0);
   const today = new Date().toLocaleDateString("es-MX", { year: "numeric", month: "long", day: "numeric" });
 
@@ -188,7 +200,7 @@ function PriceTable() {
     try {
       let query = supabase
         .from("products")
-        .select("id, name, sku, price, categories(name)", { count: "exact" })
+        .select("id, name, sku, price, material, grade, finish, categories(name)", { count: "exact" })
         .not("price", "is", null)
         .gt("price", 0);
 
@@ -205,6 +217,9 @@ function PriceTable() {
       setProducts((data ?? []).map((p: any) => ({
         id: p.id, name: p.name, sku: p.sku || "—",
         category: p.categories?.name || "Otros", price: p.price,
+        material: p.material || "Generico",
+        grade: p.grade || "S/G",
+        finish: p.finish || "Natural"
       })));
       setTotalCount(count ?? 0);
     } finally { setLoading(false); }
@@ -507,7 +522,8 @@ function PriceTable() {
                       <th className="text-left py-4 px-5 text-[10px] font-black text-slate-400 uppercase tracking-widest w-32">SKU / Clave</th>
                       <th className="text-left py-4 px-3 text-[10px] font-black text-slate-400 uppercase tracking-widest">Descripción del Producto</th>
                       <th className="text-left py-4 px-3 text-[10px] font-black text-slate-400 uppercase tracking-widest hidden md:table-cell w-36">Categoría</th>
-                      <th className="text-right py-4 px-5 text-[10px] font-black text-slate-400 uppercase tracking-widest w-40">Precio Unit. MXN</th>
+                      <th className="text-right py-4 px-3 text-[10px] font-black text-slate-400 uppercase tracking-widest w-32">Precio Unit.</th>
+                      <th className="text-center py-4 px-5 text-[10px] font-black text-slate-400 uppercase tracking-widest w-20 no-print">Cotizar</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -544,8 +560,35 @@ function PriceTable() {
                                 {p.category}
                               </span>
                             </td>
-                            <td className="py-3.5 px-5 text-right">
+                            <td className="py-3.5 px-3 text-right">
                               <span className="font-black text-primary text-base">${fmt(sell)}</span>
+                            </td>
+                            <td className="py-3.5 px-5 text-center no-print">
+                              <button
+                                onClick={() => {
+                                  addItem({ 
+                                    ...p, 
+                                    price: sell, 
+                                    currency: 'MXN',
+                                    material: p.material || 'Generico',
+                                    grade: p.grade || 'S/G',
+                                    finish: p.finish || 'Natural'
+                                  } as any, 1);
+                                }}
+                                className={cn(
+                                  "w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300",
+                                  items.some(it => it.id === p.id)
+                                    ? "bg-green-500 text-white shadow-lg shadow-green-200"
+                                    : "bg-slate-100 text-slate-400 hover:bg-primary hover:text-white hover:shadow-lg hover:shadow-primary/20"
+                                )}
+                                title="Añadir a la cotización"
+                              >
+                                {items.some(it => it.id === p.id) ? (
+                                  <Check className="w-4 h-4" />
+                                ) : (
+                                  <Plus className="w-4 h-4" />
+                                )}
+                              </button>
                             </td>
                           </tr>
                         );
