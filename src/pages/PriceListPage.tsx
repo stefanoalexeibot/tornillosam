@@ -25,15 +25,18 @@ import { cn } from "@/lib/utils";
 
 /* ─── Configuración ───────────────────────────────────────────────── */
 const ACCESS_CODE = import.meta.env.VITE_PRICELIST_CODE ?? "tornillos2024";
-const SUPPLIER_DISCOUNT = 0.765; // 76.5% descuento del proveedor
-const MARKUP = 1.70;             // 70% de utilidad
+// El script de importación almacenó: price_en_db = $ LISTA / 2
+// Por lo tanto: $ LISTA real = price_en_db × 2
+// Costo neto (76.5% dto) = LISTA × 0.235 = price_en_db × 2 × 0.235
+// Precio venta (×1.70)   = Costo × 1.70  = price_en_db × 0.799  ← neto final
+const MARKUP_FACTOR = 2 * (1 - 0.765) * 1.70; // = 0.7990
 const PAGE_SIZE = 50;
 const SESSION_KEY = "pricelist_auth";
 
 /* ─── Cálculo de precio ───────────────────────────────────────────── */
-function calcSellPrice(listPrice: number): number {
-  const cost = listPrice * (1 - SUPPLIER_DISCOUNT);
-  return cost * MARKUP;
+function calcSellPrice(dbPrice: number): number {
+  // dbPrice = $ LISTA / 2  →  precio cliente = dbPrice × 0.799
+  return dbPrice * MARKUP_FACTOR;
 }
 
 interface Product {
