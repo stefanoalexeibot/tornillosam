@@ -6,6 +6,7 @@
 const SYNONYMS: Record<string, string[]> = {
   hex: ["hexagonal", "hex"],
   hexagonal: ["hexagonal", "hex"],
+  hexagonales: ["hexagonal", "hex"],
   skt: ["socket", "skt"],
   socket: ["socket", "skt"],
   inox: ["inoxidable", "inox"],
@@ -23,6 +24,8 @@ const SYNONYMS: Record<string, string[]> = {
   rondanas: ["rondana", "rondanas"],
   tuerca: ["tuerca", "tuercas"],
   tuercas: ["tuerca", "tuercas"],
+  grado: ["grado", "grados"],
+  grados: ["grado", "grados"],
 };
 
 /**
