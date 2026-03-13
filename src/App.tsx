@@ -7,6 +7,7 @@ import ContactPage from "@/pages/ContactPage"
 import ProductPage from "@/pages/ProductPage"
 import NotFoundPage from "@/pages/NotFoundPage"
 import PriceListPage from "@/pages/PriceListPage"
+import { WhatsAppButton } from "@/components/WhatsAppButton"
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/lista-precios" element={<PriceListPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      <WhatsAppButton />
     </Router>
   )
 }

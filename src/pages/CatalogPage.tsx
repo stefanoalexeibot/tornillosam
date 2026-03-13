@@ -18,6 +18,8 @@ import {
 import { useCart } from "@/hooks/useCart";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { applySmartSearch } from "@/lib/search-utils";
+import { VisualHeadGuide } from "@/components/VisualHeadGuide";
 import { supabase } from "@/lib/supabase";
 import {
   Select,
@@ -102,11 +104,8 @@ export default function CatalogPage() {
         .from("products")
         .select("*, categories(name)", { count: "exact" });
 
-      // Search filter
       if (debouncedSearch.trim()) {
-        query = query.or(
-          `name.ilike.%${debouncedSearch}%,sku.ilike.%${debouncedSearch}%`
-        );
+        query = applySmartSearch(query, debouncedSearch);
       }
 
       // Category filter
@@ -193,6 +192,19 @@ export default function CatalogPage() {
                 )}
               </div>
             </div>
+          </div>
+        </section>
+        
+        {/* Guía Visual de Cabezas */}
+        <section className="bg-white border-b border-slate-100 overflow-hidden">
+          <div className="container mx-auto max-w-7xl px-4 sm:px-6">
+            <VisualHeadGuide 
+              currentSearch={searchTerm}
+              onSelect={(term) => {
+                setSearchTerm(term);
+                setCurrentPage(0);
+              }}
+            />
           </div>
         </section>
 

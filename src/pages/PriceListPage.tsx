@@ -13,6 +13,7 @@ import {
   Building2, Phone, Mail, Lightbulb, Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { applySmartSearch } from "@/lib/search-utils";
 
 /* ─── Configuración ─────────────────────────────────────────── */
 const ACCESS_CODE   = import.meta.env.VITE_PRICELIST_CODE ?? "tornillos2024";
@@ -191,8 +192,9 @@ function PriceTable() {
         .not("price", "is", null)
         .gt("price", 0);
 
-      if (debouncedSearch.trim())
-        query = query.or(`name.ilike.%${debouncedSearch}%,sku.ilike.%${debouncedSearch}%`);
+      if (debouncedSearch.trim()) {
+        query = applySmartSearch(query, debouncedSearch);
+      }
       if (selectedCategory !== "all")
         query = query.eq("categories.name", selectedCategory);
 
@@ -224,8 +226,9 @@ function PriceTable() {
         .gt("price", 0)
         .order("name");
 
-      if (debouncedSearch.trim())
-        query = query.or(`name.ilike.%${debouncedSearch}%,sku.ilike.%${debouncedSearch}%`);
+      if (debouncedSearch.trim()) {
+        query = applySmartSearch(query, debouncedSearch);
+      }
       if (selectedCategory !== "all")
         query = query.eq("categories.name", selectedCategory);
 
