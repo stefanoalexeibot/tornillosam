@@ -20,6 +20,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { applySmartSearch } from "@/lib/search-utils";
 import { VisualHeadGuide } from "@/components/VisualHeadGuide";
+import SEO from "@/components/SEO";
 import { supabase } from "@/lib/supabase";
 import {
   Select,
@@ -156,6 +157,10 @@ export default function CatalogPage() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col">
+      <SEO 
+        title="Catálogo de Tornillería | Tornillos AM" 
+        description="Busca entre más de 13,000 refacciones industriales. Tornillos, tuercas, pijas y más con entrega inmediata en Monterrey."
+      />
       <Navbar />
 
       <main className="flex-1 flex flex-col">

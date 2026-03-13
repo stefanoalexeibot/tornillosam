@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -42,6 +43,10 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO 
+        title="Servicios y Maquinados | Tornillos AM" 
+        description="Fabricaciones especiales, maquinados de precisión y soluciones industriales a medida en Monterrey."
+      />
       <Navbar />
       
       <main>

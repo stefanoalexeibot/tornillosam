@@ -8,10 +8,12 @@ import { Markets } from "@/components/Markets"
 import { Infrastructure } from "@/components/Infrastructure"
 import { Footer } from "@/components/Footer"
 import { WhatsAppButton } from "@/components/WhatsAppButton"
+import SEO from "@/components/SEO"
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white">
+      <SEO />
       <Navbar />
       <Hero />
       <Brands />

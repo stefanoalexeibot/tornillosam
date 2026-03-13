@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import SEO from "@/components/SEO";
 import { Badge } from "@/components/ui/badge";
 import { 
   History, 
@@ -15,6 +16,10 @@ import { Card } from "@/components/ui/card";
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
+      <SEO 
+        title="Nosotros | Tornillos AM" 
+        description="Nuestra historia y compromiso con la industria nacional desde Monterrey. Pasión por la precisión."
+      />
       <Navbar />
       
       <main>

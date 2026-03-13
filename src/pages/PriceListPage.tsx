@@ -10,6 +10,7 @@ import * as XLSX from "xlsx";
 import { cn } from "@/lib/utils";
 import { applySmartSearch } from "@/lib/search-utils";
 import { useCart } from "@/hooks/useCart";
+import SEO from "@/components/SEO";
 import { 
   Plus, Check, 
   Search, Lock, FileDown, Printer, Eye, EyeOff,
@@ -75,6 +76,10 @@ function PasswordGate({ onSuccess }: { onSuccess: () => void }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 flex flex-col">
+      <SEO 
+        title="Lista de Precios Privada | Tornillos AM" 
+        description="Acceso exclusivo para clientes autorizados. Consulta los precios más actualizados de nuestra tornillería."
+      />
       <Navbar />
       <main className="flex-1 flex items-center justify-center px-6 py-16">
         <div className="w-full max-w-md space-y-6">

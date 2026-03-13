@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +20,10 @@ import {
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
+      <SEO 
+        title="Contacto | Tornillos AM" 
+        description="Solicita cotizaciones, soporte técnico o visítanos en Monterrey. Estamos listos para ayudarte."
+      />
       <Navbar />
       
       <main className="flex-1">
