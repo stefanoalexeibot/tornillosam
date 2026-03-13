@@ -385,20 +385,27 @@ function PriceTable() {
               <div>
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Búsquedas rápidas</p>
                 <div className="flex flex-wrap gap-2">
-                  {QUICK_SEARCHES.map((q) => (
-                    <button
-                      key={q}
-                      onClick={() => setSearchTerm(q)}
-                      className={cn(
-                        "px-3 py-1.5 rounded-full text-xs font-bold border transition-all",
-                        searchTerm === q
-                          ? "bg-primary text-white border-primary shadow-md"
-                          : "bg-slate-50 text-slate-600 border-slate-200 hover:border-primary/40 hover:text-primary hover:bg-blue-50/50"
-                      )}
-                    >
-                      {q}
-                    </button>
-                  ))}
+                  {QUICK_SEARCHES.map((q) => {
+                    const isActive = searchTerm.toLowerCase() === q.toLowerCase();
+                    return (
+                      <button
+                        key={q}
+                        onClick={() => {
+                          setSearchTerm(q);
+                          setSelectedCategory("all");
+                          setCurrentPage(0);
+                        }}
+                        className={cn(
+                          "px-3 py-1.5 rounded-full text-xs font-bold border transition-all",
+                          isActive
+                            ? "bg-primary text-white border-primary shadow-md"
+                            : "bg-slate-50 text-slate-600 border-slate-200 hover:border-primary/40 hover:text-primary hover:bg-blue-50/50"
+                        )}
+                      >
+                        {q}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -406,20 +413,26 @@ function PriceTable() {
               <div>
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Categoría</p>
                 <div className="flex flex-wrap gap-2">
-                  {["all", ...categories.sort()].map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => { setSelectedCategory(cat); setCurrentPage(0); }}
-                      className={cn(
-                        "px-3 py-1.5 rounded-full text-xs font-bold border transition-all",
-                        selectedCategory === cat
-                          ? "bg-primary text-white border-primary shadow-md"
-                          : "bg-slate-50 text-slate-600 border-slate-200 hover:border-primary/40 hover:text-primary"
-                      )}
-                    >
-                      {cat === "all" ? "Todas" : cat}
-                    </button>
-                  ))}
+                  {["all", ...categories.sort()].map((cat) => {
+                    const isActive = selectedCategory === cat;
+                    return (
+                      <button
+                        key={cat}
+                        onClick={() => { 
+                          setSelectedCategory(cat); 
+                          setCurrentPage(0);
+                        }}
+                        className={cn(
+                          "px-3 py-1.5 rounded-full text-xs font-bold border transition-all",
+                          isActive
+                            ? "bg-primary text-white border-primary shadow-md"
+                            : "bg-slate-50 text-slate-600 border-slate-200 hover:border-primary/40 hover:text-primary"
+                        )}
+                      >
+                        {cat === "all" ? "Todas" : cat}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
