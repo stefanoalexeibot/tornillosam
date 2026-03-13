@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Search, Menu, X } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
 import { CartSheet } from "./CartSheet"
 import { useState, useEffect } from "react"
@@ -22,6 +22,8 @@ export function Navbar() {
     { label: "Nosotros", to: "/nosotros" },
     { label: "Contacto", to: "/contacto" },
   ]
+
+  const priceListLink = { label: "Lista de Precios", to: "/lista-precios" }
 
   return (
     <>
@@ -68,9 +70,16 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" className="hidden md:flex rounded-xl hover:bg-slate-50">
-            <Search className="w-5 h-5 text-slate-500" />
-          </Button>
+          <Link
+            to={priceListLink.to}
+            className={`hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black border transition-all ${
+              location.pathname === priceListLink.to
+                ? "bg-primary text-white border-primary"
+                : "border-slate-200 text-slate-600 hover:border-primary/40 hover:text-primary bg-slate-50"
+            }`}
+          >
+            <span>🔒</span> {priceListLink.label}
+          </Link>
           <CartSheet />
           <Link to="/contacto" className="hidden md:block">
             <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
@@ -114,7 +123,18 @@ export function Navbar() {
                 {label}
               </Link>
             ))}
-            <div className="pt-2">
+            <div className="pt-2 space-y-2">
+              <Link
+                to={priceListLink.to}
+                onClick={() => setMenuOpen(false)}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
+                  location.pathname === priceListLink.to
+                    ? "text-primary bg-primary/5"
+                    : "text-slate-700 hover:text-primary hover:bg-slate-50"
+                }`}
+              >
+                <span>🔒</span> {priceListLink.label}
+              </Link>
               <Link to="/contacto" onClick={() => setMenuOpen(false)}>
                 <Button className="w-full rounded-xl font-black">Cotizar ahora</Button>
               </Link>
