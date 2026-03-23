@@ -6,7 +6,7 @@ import type { Lead, Activity, TipoActividad, EstadoLead } from '../types'
 import { ESTADOS, ACTIVIDAD_ICONS } from '../types'
 import LeadModal from '../components/LeadModal'
 import AutoFollowUpCard from '../components/AutoFollowUpCard'
-import { ArrowLeft, Phone, Mail, Edit, Send, ExternalLink } from 'lucide-react'
+import { ArrowLeft, Phone, Mail, Edit, Send } from 'lucide-react'
 import { formatDistanceToNow, format } from 'date-fns'
 import { es } from 'date-fns/locale'
 
