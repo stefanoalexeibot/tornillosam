@@ -14,7 +14,7 @@ export default function Sidebar() {
   ]
 
   return (
-    <aside className="sidebar desktop-only">
+    <aside className="w-[280px] bg-white border-r border-[#E2E8F0] px-4 py-8 h-screen sticky top-0 z-40 transition-all duration-300 hidden md:flex flex-col">
       <div style={{ padding: '0 8px 32px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           <div style={{ 

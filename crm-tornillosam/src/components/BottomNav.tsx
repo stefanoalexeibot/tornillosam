@@ -9,7 +9,7 @@ export default function BottomNav() {
 
   return (
     <>
-      <nav className="bottom-nav mobile-only">
+      <nav className="bottom-nav flex md:hidden">
         <Link to="/" className={`nav-item ${location.pathname === '/' ? 'active' : ''}`}>
           <LayoutDashboard size={22} />
           <span>Inicio</span>

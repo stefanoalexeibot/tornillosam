@@ -8,9 +8,9 @@ interface Props {
 
 export default function Layout({ children }: Props) {
   return (
-    <div className="layout-container">
+    <div className="flex min-h-screen bg-[#F8FAFC]">
       <Sidebar />
-      <main style={{ flex: 1, overflow: 'auto', minWidth: 0, paddingBottom: 20 }}>
+      <main className="flex-1 overflow-auto min-w-0 pb-20 md:pb-0">
         {children}
       </main>
       <BottomNav />
