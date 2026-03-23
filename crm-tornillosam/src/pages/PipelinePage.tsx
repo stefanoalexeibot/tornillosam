@@ -12,6 +12,7 @@ import { ESTADOS } from '../types'
 import KanbanCard from '../components/KanbanCard'
 import LeadModal from '../components/LeadModal'
 import { Plus, RefreshCw } from 'lucide-react'
+import { useAuth } from '../hooks/useAuth'
 
 const PIPELINE_STAGES: EstadoLead[] = ['conectado', 'respondio', 'llamada', 'propuesta', 'cliente']
 
@@ -88,13 +89,16 @@ export default function PipelinePage() {
   const [loading, setLoading] = useState(true)
   const [activeId, setActiveId] = useState<string | null>(null)
   const [showModal, setShowModal] = useState(false)
-
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }))
+  const { user } = useAuth()
+  const sensors = useSensors(useSensor(PointerSensor, { 
+    activationConstraint: { distance: 5 } 
+  }))
 
   const load = async () => {
+    if (!user) return
     try {
       setLoading(true)
-      const data = await getLeads()
+      const data = await getLeads(user.id)
       setLeads(data.filter(l => l.estado !== 'archivado'))
     } finally {
       setLoading(false)
@@ -102,12 +106,19 @@ export default function PipelinePage() {
   }
 
   useEffect(() => {
-    load()
+    if (user) {
+      load()
+    }
     
-    // Subscribe to real-time changes
+    // Subscribe only to changes for THIS user's leads
     const channel = supabase
-      .channel('pipeline-leads')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'leads' }, () => {
+      .channel(`pipeline-leads-${user?.id}`)
+      .on('postgres_changes', { 
+        event: '*', 
+        schema: 'public', 
+        table: 'leads',
+        filter: user ? `user_id=eq.${user.id}` : undefined
+      }, () => {
         load()
       })
       .subscribe()

@@ -2,11 +2,17 @@ import { supabase } from '../lib/supabase'
 import type { Lead, Activity, EstadoLead } from '../types'
 
 // --- LEADS ---
-export async function getLeads() {
-  const { data, error } = await supabase
+export async function getLeads(userId?: string) {
+  let query = supabase
     .from('leads')
     .select('*')
     .order('created_at', { ascending: false })
+  
+  if (userId) {
+    query = query.eq('user_id', userId)
+  }
+
+  const { data, error } = await query
   if (error) throw error
   return data as Lead[]
 }
