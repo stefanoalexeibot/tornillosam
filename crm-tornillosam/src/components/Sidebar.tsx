@@ -23,9 +23,9 @@ export default function Sidebar() {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             color: 'white', fontWeight: 900, fontSize: '1.3rem',
             boxShadow: '0 8px 16px rgba(37, 99, 235, 0.2)'
-          }}>T</div>
+          }}>M</div>
           <div>
-            <div style={{ fontWeight: 800, fontSize: '1.1rem', color: '#0F172A', lineHeight: 1, letterSpacing: '-0.02em' }}>Tornillos AM</div>
+            <div style={{ fontWeight: 800, fontSize: '1.1rem', color: '#0F172A', lineHeight: 1, letterSpacing: '-0.02em' }}>Maquinados AM</div>
             <div style={{ fontSize: '0.7rem', color: '#3B82F6', fontWeight: 700, marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Sistema CRM</div>
           </div>
         </div>

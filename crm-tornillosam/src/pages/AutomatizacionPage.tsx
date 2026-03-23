@@ -2,7 +2,7 @@ export default function AutomatizacionPage() {
   return (
     <div style={{ padding: 28 }}>
       <h1 style={{ fontWeight: 800, fontSize: '1.4rem', color: '#0F172A', marginBottom: 8 }}>Automatización</h1>
-      <p style={{ color: '#64748B', marginBottom: 28 }}>Conecta tus herramientas para automatizar el pipeline de LinkedIn</p>
+      <p style={{ color: '#64748B', marginBottom: 28 }}>Conecta tus herramientas para automatizar el pipeline de Maquinados CNC</p>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
         {[

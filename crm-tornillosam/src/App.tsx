@@ -21,7 +21,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
     }}>
       <div style={{ width: 40, height: 40, border: '3px solid #E2E8F0', borderTopColor: '#2563EB', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-      <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>Iniciando CRM de Tornillos AM...</span>
+      <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>Iniciando CRM de Maquinados AM...</span>
     </div>
   )
   
