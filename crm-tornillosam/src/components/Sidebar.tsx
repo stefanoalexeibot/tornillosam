@@ -22,18 +22,7 @@ export default function Sidebar({ onToggleDark, isDark }: Props) {
   const { user, signOut } = useAuth()
 
   return (
-    <aside style={{
-      width: 240,
-      minWidth: 240,
-      background: 'var(--surface)',
-      borderRight: '1px solid var(--border)',
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100vh',
-      position: 'sticky',
-      top: 0,
-      padding: '0',
-    }}>
+    <aside className="sidebar desktop-only">
       {/* Logo */}
       <div style={{
         padding: '20px 20px 16px',

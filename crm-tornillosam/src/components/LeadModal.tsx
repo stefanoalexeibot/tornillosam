@@ -67,34 +67,43 @@ export default function LeadModal({ lead, onClose, onSaved }: Props) {
         </div>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          {/* Main Info Grid */}
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+            gap: 12 
+          }}>
             <div>
               <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', display: 'block', marginBottom: 4 }}>Nombre *</label>
-              <input className="input" required value={form.nombre} onChange={set('nombre')} placeholder="Juan Pérez" />
+              <input className="input" required value={form.nombre} onChange={set('nombre')} placeholder="Nombre completo" />
             </div>
             <div>
               <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', display: 'block', marginBottom: 4 }}>Empresa</label>
-              <input className="input" value={form.empresa} onChange={set('empresa')} placeholder="CEMEX" />
+              <input className="input" value={form.empresa} onChange={set('empresa')} placeholder="Empresa o Negocio" />
             </div>
             <div>
-              <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', display: 'block', marginBottom: 4 }}>Cargo</label>
-              <input className="input" value={form.cargo} onChange={set('cargo')} placeholder="Gerente de Compras" />
+              <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', display: 'block', marginBottom: 4 }}>Cargo / Puesto</label>
+              <input className="input" value={form.cargo} onChange={set('cargo')} placeholder="Ej. Gerente, Dueño..." />
             </div>
             <div>
-              <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', display: 'block', marginBottom: 4 }}>LinkedIn URL</label>
-              <input className="input" value={form.linkedin_url} onChange={set('linkedin_url')} placeholder="https://linkedin.com/in/..." />
-            </div>
-            <div>
-              <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', display: 'block', marginBottom: 4 }}>Teléfono</label>
-              <input className="input" value={form.telefono} onChange={set('telefono')} placeholder="+52 81 1234 5678" />
+              <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', display: 'block', marginBottom: 4 }}>Teléfono (WhatsApp)</label>
+              <input className="input" value={form.telefono} onChange={set('telefono')} placeholder="+52 ..." />
             </div>
             <div>
               <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', display: 'block', marginBottom: 4 }}>Email</label>
-              <input className="input" type="email" value={form.email} onChange={set('email')} placeholder="juan@empresa.com" />
+              <input className="input" type="email" value={form.email} onChange={set('email')} placeholder="correo@ejemplo.com" />
+            </div>
+            <div>
+              <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', display: 'block', marginBottom: 4 }}>LinkedIn / Web URL</label>
+              <input className="input" value={form.linkedin_url} onChange={set('linkedin_url')} placeholder="URL de perfil o sitio" />
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', 
+            gap: 12 
+          }}>
             <div>
               <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', display: 'block', marginBottom: 4 }}>Estado</label>
               <select className="input" value={form.estado} onChange={set('estado')}>
@@ -110,9 +119,12 @@ export default function LeadModal({ lead, onClose, onSaved }: Props) {
               <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', display: 'block', marginBottom: 4 }}>Fuente</label>
               <select className="input" value={form.fuente} onChange={set('fuente')}>
                 <option value="linkedin">LinkedIn</option>
+                <option value="whatsapp">WhatsApp</option>
+                <option value="facebook">Facebook</option>
+                <option value="directo">Trato Directo</option>
                 <option value="referido">Referido</option>
                 <option value="manual">Manual</option>
-                <option value="webhook">Webhook</option>
+                <option value="webhook">Automático (Web)</option>
               </select>
             </div>
             <div>
@@ -126,21 +138,21 @@ export default function LeadModal({ lead, onClose, onSaved }: Props) {
           </div>
 
           <div>
-            <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', display: 'block', marginBottom: 4 }}>Notas</label>
+            <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', display: 'block', marginBottom: 4 }}>Notas adicionales</label>
             <textarea
               className="input"
               value={form.notas}
               onChange={set('notas')}
-              placeholder="Detalles importantes sobre este lead..."
-              rows={3}
+              placeholder="Detalles importantes..."
+              rows={2}
               style={{ resize: 'vertical' }}
             />
           </div>
 
-          <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', marginTop: 4 }}>
-            <button type="button" className="btn btn-ghost" onClick={onClose}>Cancelar</button>
-            <button type="submit" className="btn btn-primary" disabled={loading}>
-              {loading ? 'Guardando...' : isEdit ? 'Actualizar' : 'Crear Lead'}
+          <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', marginTop: 10 }}>
+            <button type="button" className="btn btn-ghost" onClick={onClose} style={{ flex: 1 }}>Cancelar</button>
+            <button type="submit" className="btn btn-primary" disabled={loading} style={{ flex: 2 }}>
+              {loading ? '...' : isEdit ? 'Guardar Cambios' : 'Crear Lead'}
             </button>
           </div>
         </form>

@@ -64,7 +64,12 @@ export default function DashboardPage() {
       </div>
 
       {/* KPI Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 28 }}>
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+        gap: 16, 
+        marginBottom: 28 
+      }}>
         {loading
           ? Array(4).fill(0).map((_, i) => <div key={i} className="kpi-card skeleton" style={{ height: 100 }} />)
           : kpis.map(({ label, value, icon: Icon, color, bg, sub }) => (
@@ -84,7 +89,11 @@ export default function DashboardPage() {
         }
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+        gap: 20 
+      }}>
         {/* Leads urgentes */}
         <div className="glass-card" style={{ padding: 20 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>

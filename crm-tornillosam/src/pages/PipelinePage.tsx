@@ -181,7 +181,15 @@ export default function PipelinePage() {
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
-          <div style={{ display: 'flex', gap: 16, overflowX: 'auto', paddingBottom: 28, alignItems: 'flex-start' }}>
+        <div style={{ 
+          display: 'flex', 
+          gap: 16, 
+          overflowX: 'auto', 
+          paddingBottom: 28, 
+          alignItems: 'flex-start',
+          scrollSnapType: 'x mandatory',
+          padding: '0 4px'
+        }}>
             {PIPELINE_STAGES.map(stage => {
               const estadoInfo = ESTADOS.find(e => e.value === stage)!
               return (

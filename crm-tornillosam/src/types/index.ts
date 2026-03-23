@@ -1,5 +1,5 @@
 export type EstadoLead = 'conectado' | 'respondio' | 'llamada' | 'propuesta' | 'cliente' | 'archivado'
-export type FuenteLead = 'linkedin' | 'referido' | 'manual' | 'webhook'
+export type FuenteLead = 'linkedin' | 'referido' | 'manual' | 'webhook' | 'whatsapp' | 'facebook' | 'directo'
 export type PrioridadLead = 'alta' | 'media' | 'baja'
 export type TipoActividad = 'mensaje' | 'llamada' | 'email' | 'nota' | 'whatsapp'
 

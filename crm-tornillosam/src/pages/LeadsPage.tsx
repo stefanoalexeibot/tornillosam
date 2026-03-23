@@ -90,118 +90,160 @@ export default function LeadsPage() {
         </select>
       </div>
 
-      {/* Table */}
-      <div className="glass-card" style={{ overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ background: '#F8FAFC', borderBottom: '1px solid #E2E8F0' }}>
-              {['Lead', 'Empresa', 'Estado', 'Fuente', 'Prioridad', 'Actualizado', 'Acciones'].map(h => (
-                <th key={h} style={{
-                  padding: '10px 16px', textAlign: 'left',
-                  fontSize: '0.72rem', fontWeight: 700, color: '#64748B',
-                  textTransform: 'uppercase', letterSpacing: '0.05em',
-                }}>
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {loading
-              ? Array(5).fill(0).map((_, i) => (
-                <tr key={i}>
-                  <td colSpan={7} style={{ padding: '10px 16px' }}>
-                    <div className="skeleton" style={{ height: 32, borderRadius: 6 }} />
-                  </td>
-                </tr>
-              ))
-              : filtered.length === 0
-                ? (
-                  <tr>
-                    <td colSpan={7} style={{ textAlign: 'center', padding: '48px 16px', color: '#94A3B8', fontSize: '0.9rem' }}>
-                      No se encontraron leads
+      {/* Table / Card List */}
+      <div className="glass-card" style={{ overflow: 'hidden', border: 'none', background: 'transparent', boxShadow: 'none' }}>
+        {/* Desktop Table View */}
+        <div className="desktop-only glass-card" style={{ overflow: 'hidden' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ background: '#F8FAFC', borderBottom: '1px solid #E2E8F0' }}>
+                {['Lead', 'Empresa', 'Estado', 'Fuente', 'Prioridad', 'Actualizado', 'Acciones'].map(h => (
+                  <th key={h} style={{
+                    padding: '12px 16px', textAlign: 'left',
+                    fontSize: '0.72rem', fontWeight: 700, color: '#64748B',
+                    textTransform: 'uppercase', letterSpacing: '0.05em',
+                  }}>
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {loading
+                ? Array(5).fill(0).map((_, i) => (
+                  <tr key={i}>
+                    <td colSpan={7} style={{ padding: '10px 16px' }}>
+                      <div className="skeleton" style={{ height: 40, borderRadius: 8 }} />
                     </td>
                   </tr>
-                )
-                : filtered.map(lead => {
-                  const estado = ESTADOS.find(e => e.value === lead.estado)
-                  const prio = PRIORIDAD_COLORS[lead.prioridad]
-                  return (
-                    <tr
-                      key={lead.id}
-                      style={{
-                        borderBottom: '1px solid #F1F5F9',
-                        transition: 'background 0.15s',
-                      }}
-                      onMouseEnter={e => (e.currentTarget.style.background = '#F8FAFC')}
-                      onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-                    >
-                      <td style={{ padding: '12px 16px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                          <div style={{
-                            width: 32, height: 32, borderRadius: '50%',
-                            background: `${estado?.color}22`,
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: '0.7rem', fontWeight: 700, color: estado?.color, flexShrink: 0,
-                          }}>
-                            {lead.nombre.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
-                          </div>
-                          <div>
-                            <Link to={`/leads/${lead.id}`} style={{ fontWeight: 600, fontSize: '0.85rem', color: '#0F172A', textDecoration: 'none' }}>
-                              {lead.nombre}
-                            </Link>
-                            {lead.cargo && <div style={{ fontSize: '0.72rem', color: '#64748B' }}>{lead.cargo}</div>}
-                          </div>
-                        </div>
-                      </td>
-                      <td style={{ padding: '12px 16px', fontSize: '0.85rem', color: '#374151' }}>{lead.empresa ?? '—'}</td>
-                      <td style={{ padding: '12px 16px' }}>
-                        <span style={{
-                          background: estado?.bg, color: estado?.color,
-                          borderRadius: 9999, padding: '3px 10px', fontSize: '0.72rem', fontWeight: 600
-                        }}>
-                          {estado?.label}
-                        </span>
-                      </td>
-                      <td style={{ padding: '12px 16px' }}>
-                        {lead.fuente === 'linkedin'
-                          ? <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: '0.8rem', color: '#0A66C2', fontWeight: 500 }}>💼 LinkedIn</span>
-                          : <span style={{ fontSize: '0.8rem', color: '#64748B', textTransform: 'capitalize' }}>{lead.fuente}</span>
-                        }
-                      </td>
-                      <td style={{ padding: '12px 16px' }}>
-                        <span style={{ fontSize: '0.78rem', fontWeight: 500, color: prio.color }}>{prio.label}</span>
-                      </td>
-                      <td style={{ padding: '12px 16px', fontSize: '0.78rem', color: '#94A3B8' }}>
-                        {formatDistanceToNow(new Date(lead.updated_at), { addSuffix: true, locale: es })}
-                      </td>
-                      <td style={{ padding: '12px 16px' }}>
-                        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                          <Link to={`/leads/${lead.id}`} title="Ver detalle">
-                            <ExternalLink size={15} color="#64748B" />
-                          </Link>
-                          <button
-                            title="Editar"
-                            style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-                            onClick={() => { setEditLead(lead); setShowModal(true) }}
-                          >
-                            <Edit size={15} color="#64748B" />
-                          </button>
-                          <button
-                            title="Eliminar"
-                            style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-                            onClick={() => handleDelete(lead.id)}
-                          >
-                            <Trash2 size={15} color="#EF4444" />
-                          </button>
-                        </div>
+                ))
+                : filtered.length === 0
+                  ? (
+                    <tr>
+                      <td colSpan={7} style={{ textAlign: 'center', padding: '48px 16px', color: '#94A3B8', fontSize: '0.9rem' }}>
+                        No se encontraron leads
                       </td>
                     </tr>
                   )
-                })
-            }
-          </tbody>
-        </table>
+                  : filtered.map(lead => {
+                    const estado = ESTADOS.find(e => e.value === lead.estado)
+                    const prio = PRIORIDAD_COLORS[lead.prioridad]
+                    return (
+                      <tr
+                        key={lead.id}
+                        style={{ borderBottom: '1px solid #F1F5F9', transition: 'background 0.1s' }}
+                        onMouseEnter={e => (e.currentTarget.style.background = '#F8FAFC')}
+                        onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                      >
+                        <td style={{ padding: '14px 16px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                            <div style={{
+                              width: 36, height: 36, borderRadius: '50%',
+                              background: `${estado?.color}15`,
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              fontSize: '0.75rem', fontWeight: 700, color: estado?.color, flexShrink: 0,
+                            }}>
+                              {lead.nombre.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+                            </div>
+                            <div>
+                              <Link to={`/leads/${lead.id}`} style={{ fontWeight: 600, fontSize: '0.875rem', color: '#0F172A', textDecoration: 'none' }}>
+                                {lead.nombre}
+                              </Link>
+                              {lead.cargo && <div style={{ fontSize: '0.72rem', color: '#64748B' }}>{lead.cargo}</div>}
+                            </div>
+                          </div>
+                        </td>
+                        <td style={{ padding: '14px 16px', fontSize: '0.875rem', color: '#334155' }}>{lead.empresa ?? '—'}</td>
+                        <td style={{ padding: '14px 16px' }}>
+                          <span style={{
+                            background: estado?.bg, color: estado?.color,
+                            borderRadius: 99, padding: '4px 12px', fontSize: '0.72rem', fontWeight: 700
+                          }}>
+                            {estado?.label}
+                          </span>
+                        </td>
+                        <td style={{ padding: '14px 16px' }}>
+                          <span style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 500, textTransform: 'capitalize' }}>
+                            {lead.fuente === 'linkedin' ? '💼 LinkedIn' : lead.fuente}
+                          </span>
+                        </td>
+                        <td style={{ padding: '14px 16px' }}>
+                          <span style={{ fontSize: '0.78rem', fontWeight: 600, color: prio.color }}>{prio.label}</span>
+                        </td>
+                        <td style={{ padding: '14px 16px', fontSize: '0.78rem', color: '#94A3B8' }}>
+                          {formatDistanceToNow(new Date(lead.updated_at), { addSuffix: true, locale: es })}
+                        </td>
+                        <td style={{ padding: '14px 16px' }}>
+                          <div style={{ display: 'flex', gap: 10 }}>
+                            <Link to={`/leads/${lead.id}`}><ExternalLink size={16} color="#94A3B8" /></Link>
+                            <button style={{ background: 'none', border: 'none', cursor: 'pointer' }} onClick={() => { setEditLead(lead); setShowModal(true) }}>
+                              <Edit size={16} color="#94A3B8" />
+                            </button>
+                            <button style={{ background: 'none', border: 'none', cursor: 'pointer' }} onClick={() => handleDelete(lead.id)}>
+                              <Trash2 size={16} color="#EF4444" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })
+              }
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile Card View */}
+        <div className="mobile-only" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {filtered.map(lead => {
+            const estado = ESTADOS.find(e => e.value === lead.estado)
+            const prio = PRIORIDAD_COLORS[lead.prioridad]
+            return (
+              <div key={lead.id} className="glass-card animate-slide-up" style={{ padding: 16 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+                  <div style={{ display: 'flex', gap: 12 }}>
+                    <div style={{
+                      width: 40, height: 40, borderRadius: 12,
+                      background: `${estado?.color}15`,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '0.85rem', fontWeight: 800, color: estado?.color
+                    }}>
+                      {lead.nombre[0].toUpperCase()}
+                    </div>
+                    <div>
+                      <Link to={`/leads/${lead.id}`} style={{ fontWeight: 700, fontSize: '0.95rem', color: '#0F172A', textDecoration: 'none', display: 'block' }}>
+                        {lead.nombre}
+                      </Link>
+                      <div style={{ fontSize: '0.75rem', color: '#64748B' }}>{lead.empresa || 'Empresa no reg.'}</div>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <button style={{ background: 'none', border: 'none' }} onClick={() => { setEditLead(lead); setShowModal(true) }}><Edit size={16} color="#94A3B8" /></button>
+                    <button style={{ background: 'none', border: 'none' }} onClick={() => handleDelete(lead.id)}><Trash2 size={16} color="#EF4444" /></button>
+                  </div>
+                </div>
+                
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  <span style={{ background: estado?.bg, color: estado?.color, borderRadius: 8, padding: '4px 10px', fontSize: '0.7rem', fontWeight: 700 }}>
+                    {estado?.label}
+                  </span>
+                  <span style={{ border: '1px solid #E2E8F0', padding: '4px 10px', borderRadius: 8, fontSize: '0.7rem', color: '#64748B', fontWeight: 600 }}>
+                    {lead.fuente}
+                  </span>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 700, color: prio.color, marginTop: 4 }}>{prio.label}</span>
+                </div>
+                
+                <div style={{ marginTop: 12, borderTop: '1px solid #F1F5F9', paddingTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ fontSize: '0.7rem', color: '#94A3B8' }}>
+                    Actualizado {formatDistanceToNow(new Date(lead.updated_at), { locale: es })}
+                  </div>
+                  <Link to={`/leads/${lead.id}`} className="btn btn-ghost" style={{ padding: '4px 12px', fontSize: '0.7rem' }}>
+                    Ver Detalle <ExternalLink size={12} />
+                  </Link>
+                </div>
+              </div>
+            )
+          })}
+        </div>
       </div>
 
       {showModal && (
