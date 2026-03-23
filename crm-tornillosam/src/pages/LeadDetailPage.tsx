@@ -97,81 +97,89 @@ export default function LeadDetailPage() {
   const initials = lead.nombre.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
 
   return (
-    <div style={{ padding: 28, maxWidth: 900, margin: '0 auto' }}>
+    <div style={{ padding: '16px 16px 32px', maxWidth: 900, margin: '0 auto' }}>
       {/* Back */}
-      <Link to="/leads" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#64748B', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500, marginBottom: 20 }}>
+      <Link to="/leads" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#64748B', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500, marginBottom: 16 }}>
         <ArrowLeft size={15} /> Volver a Leads
       </Link>
 
       {/* Lead Header Card */}
-      <div className="glass-card" style={{ padding: 24, marginBottom: 20 }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 18 }}>
-          <div style={{
-            width: 60, height: 60, borderRadius: '50%',
-            background: `linear-gradient(135deg, ${estado?.color}33, ${estado?.color}66)`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '1.2rem', fontWeight: 800, color: estado?.color, flexShrink: 0,
-          }}>
-            {initials}
+      <div className="glass-card" style={{ padding: '20px 20px', marginBottom: 20 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+            <div style={{
+              width: 52, height: 52, borderRadius: '50%',
+              background: `linear-gradient(135deg, ${estado?.color}33, ${estado?.color}66)`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '1.1rem', fontWeight: 800, color: estado?.color, flexShrink: 0,
+            }}>
+              {initials}
+            </div>
+
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                <h1 style={{ fontWeight: 800, fontSize: '1.25rem', color: '#0F172A' }}>{lead.nombre}</h1>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <span style={{
+                    background: estado?.bg, color: estado?.color,
+                    borderRadius: 9999, padding: '2px 10px', fontSize: '0.7rem', fontWeight: 700
+                  }}>
+                    {estado?.label}
+                  </span>
+                  <span style={{
+                    background: lead.prioridad === 'alta' ? '#FEF2F2' : lead.prioridad === 'media' ? '#FFFBEB' : '#ECFDF5',
+                    color: lead.prioridad === 'alta' ? '#EF4444' : lead.prioridad === 'media' ? '#F59E0B' : '#10B981',
+                    borderRadius: 9999, padding: '2px 10px', fontSize: '0.7rem', fontWeight: 700
+                  }}>
+                    {lead.prioridad === 'alta' ? 'Alta' : lead.prioridad === 'media' ? 'Media' : 'Baja'}
+                  </span>
+                </div>
+              </div>
+              <div style={{ color: '#64748B', marginTop: 2, fontSize: '0.875rem', fontWeight: 500 }}>
+                {lead.cargo}{lead.cargo && lead.empresa ? ' · ' : ''}{lead.empresa}
+              </div>
+            </div>
           </div>
 
-          <div style={{ flex: 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-              <h1 style={{ fontWeight: 800, fontSize: '1.3rem', color: '#0F172A' }}>{lead.nombre}</h1>
-              <span style={{
-                background: estado?.bg, color: estado?.color,
-                borderRadius: 9999, padding: '3px 12px', fontSize: '0.75rem', fontWeight: 700
-              }}>
-                {estado?.label}
-              </span>
-              <span style={{
-                background: lead.prioridad === 'alta' ? '#FEF2F2' : lead.prioridad === 'media' ? '#FFFBEB' : '#ECFDF5',
-                color: lead.prioridad === 'alta' ? '#EF4444' : lead.prioridad === 'media' ? '#F59E0B' : '#10B981',
-                borderRadius: 9999, padding: '3px 12px', fontSize: '0.75rem', fontWeight: 700
-              }}>
-                {lead.prioridad === 'alta' ? '🔴 Alta' : lead.prioridad === 'media' ? '🟡 Media' : '🟢 Baja'}
-              </span>
-            </div>
-            <div style={{ color: '#64748B', marginTop: 4, fontSize: '0.9rem' }}>
-              {lead.cargo}{lead.cargo && lead.empresa ? ' · ' : ''}{lead.empresa}
-            </div>
-            <div style={{ display: 'flex', gap: 16, marginTop: 12, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            <button className="btn btn-ghost" style={{ flex: 1 }} onClick={() => setShowModal(true)}>
+              <Edit size={16} /> <span className="desktop-only">Editar</span>
+            </button>
+            <button className="btn btn-primary" onClick={handleGenerateAiMessage} style={{ flex: 2, background: 'linear-gradient(135deg, #6366F1, #8B5CF6)' }}>
+              ✨ <span className="desktop-only">IA Sugerir</span> Mensaje
+            </button>
+          </div>
+
+          <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: 16 }}>
+            <div style={{ display: 'flex', gap: 16, rowGap: 12, flexWrap: 'wrap' }}>
               {lead.linkedin_url && (
                 <a href={lead.linkedin_url} target="_blank" rel="noopener noreferrer"
-                  style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#0A66C2', textDecoration: 'none', fontSize: '0.82rem', fontWeight: 500 }}>
-                  💼 LinkedIn <ExternalLink size={12} />
+                  style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#0A66C2', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
+                  💼 LinkedIn
                 </a>
               )}
               {lead.telefono && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <a href={`tel:${lead.telefono}`}
-                    style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#64748B', textDecoration: 'none', fontSize: '0.82rem' }}>
-                    <Phone size={14} /> {lead.telefono}
+                    style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#64748B', textDecoration: 'none', fontSize: '0.85rem' }}>
+                    <Phone size={15} /> {lead.telefono}
                   </a>
                   <button onClick={handleSendWhatsApp} 
-                    style={{ background: '#25D366', color: 'white', border: 'none', padding: '2px 8px', borderRadius: 4, fontSize: '0.7rem', fontWeight: 600, cursor: 'pointer' }}>
+                    style={{ background: '#25D366', color: 'white', border: 'none', padding: '4px 10px', borderRadius: 8, fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}>
                     WhatsApp
                   </button>
                 </div>
               )}
               {lead.email && (
                 <a href={`mailto:${lead.email}`}
-                  style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#64748B', textDecoration: 'none', fontSize: '0.82rem' }}>
-                  <Mail size={14} /> {lead.email}
+                  style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#64748B', textDecoration: 'none', fontSize: '0.85rem' }}>
+                  <Mail size={15} /> {lead.email}
                 </a>
               )}
             </div>
           </div>
-
-          <div style={{ display: 'flex', gap: 10, flexShrink: 0 }}>
-            <button className="btn btn-ghost" onClick={() => setShowModal(true)}>
-              <Edit size={15} /> Editar
-            </button>
-            <button className="btn btn-primary" onClick={handleGenerateAiMessage} style={{ background: 'linear-gradient(135deg, #6366F1, #8B5CF6)' }}>
-              ✨ IA Sugerir
-            </button>
-          </div>
         </div>
+
 
         {/* Estado quick change */}
         <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid #F1F5F9' }}>
