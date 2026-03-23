@@ -154,7 +154,7 @@ export default function DashboardPage() {
             <Link to="/leads" style={{ color: '#2563EB', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 700 }}>Ver todos</Link>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {leads.slice(0, 5).map((lead, i) => (
+            {leads.slice(0, 5).map((lead) => (
               <Link key={lead.id} to={`/leads/${lead.id}`} style={{ 
                 padding: '14px 16px', borderRadius: 18, background: '#F8FAFC', 
                 display: 'flex', alignItems: 'center', gap: 14,

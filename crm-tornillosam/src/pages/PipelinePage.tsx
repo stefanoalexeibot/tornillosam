@@ -11,7 +11,7 @@ import type { Lead, EstadoLead } from '../types'
 import { ESTADOS } from '../types'
 import KanbanCard from '../components/KanbanCard'
 import LeadModal from '../components/LeadModal'
-import { Plus, RefreshCw, Layers } from 'lucide-react'
+import { Plus, RefreshCw } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
 
 function DroppableColumn({

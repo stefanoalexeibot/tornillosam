@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
 import { AuthProvider, useAuth } from './hooks/useAuth'
 import Layout from './components/Layout'
 import DashboardPage from './pages/DashboardPage'
@@ -18,11 +17,11 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
   if (loading) return (
     <div style={{ 
       height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-      background: '#0F172A', color: 'white', flexDirection: 'column', gap: 16
+      background: '#F8FAFC', color: '#0F172A', flexDirection: 'column', gap: 16
     }}>
-      <div style={{ width: 40, height: 40, border: '3px solid #1E293B', borderTopColor: '#3B82F6', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+      <div style={{ width: 40, height: 40, border: '3px solid #E2E8F0', borderTopColor: '#2563EB', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-      <span style={{ fontWeight: 600 }}>Iniciando CRM de Tornillos AM...</span>
+      <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>Iniciando CRM de Tornillos AM...</span>
     </div>
   )
   
@@ -32,20 +31,6 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
 }
 
 function App() {
-  const [isDark, setIsDark] = useState(() => {
-    return localStorage.getItem('theme') === 'dark'
-  })
-
-  useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('theme', 'dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-      localStorage.setItem('theme', 'light')
-    }
-  }, [isDark])
-
   return (
     <AuthProvider>
       <BrowserRouter basename="/crm">
@@ -54,31 +39,31 @@ function App() {
           
           <Route path="/" element={
             <AuthGuard>
-              <Layout isDark={isDark} onToggleDark={() => setIsDark(!isDark)}>
+              <Layout>
                 <DashboardPage />
-              </Layout>
-            </AuthGuard>
-          } />
-          
-          <Route path="/pipeline" element={
-            <AuthGuard>
-              <Layout isDark={isDark} onToggleDark={() => setIsDark(!isDark)}>
-                <PipelinePage />
               </Layout>
             </AuthGuard>
           } />
           
           <Route path="/leads" element={
             <AuthGuard>
-              <Layout isDark={isDark} onToggleDark={() => setIsDark(!isDark)}>
+              <Layout>
                 <LeadsPage />
+              </Layout>
+            </AuthGuard>
+          } />
+          
+          <Route path="/pipeline" element={
+            <AuthGuard>
+              <Layout>
+                <PipelinePage />
               </Layout>
             </AuthGuard>
           } />
           
           <Route path="/leads/:id" element={
             <AuthGuard>
-              <Layout isDark={isDark} onToggleDark={() => setIsDark(!isDark)}>
+              <Layout>
                 <LeadDetailPage />
               </Layout>
             </AuthGuard>
@@ -86,7 +71,7 @@ function App() {
           
           <Route path="/automatizacion" element={
             <AuthGuard>
-              <Layout isDark={isDark} onToggleDark={() => setIsDark(!isDark)}>
+              <Layout>
                 <AutomatizacionPage />
               </Layout>
             </AuthGuard>
@@ -94,7 +79,7 @@ function App() {
 
           <Route path="/configuracion" element={
             <AuthGuard>
-              <Layout isDark={isDark} onToggleDark={() => setIsDark(!isDark)}>
+              <Layout>
                 <ConfiguracionPage />
               </Layout>
             </AuthGuard>
