@@ -4,7 +4,8 @@ import { getLeads, deleteLead } from '../services/leads'
 import type { Lead, EstadoLead } from '../types'
 import { ESTADOS } from '../types'
 import LeadModal from '../components/LeadModal'
-import { Plus, Search, Trash2, Edit, ExternalLink } from 'lucide-react'
+import LeadsImporter from '../components/LeadsImporter'
+import { Plus, Search, Trash2, Edit, ExternalLink, FileSpreadsheet } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { es } from 'date-fns/locale'
 
@@ -20,6 +21,7 @@ export default function LeadsPage() {
   const [search, setSearch] = useState('')
   const [filterEstado, setFilterEstado] = useState<EstadoLead | ''>('')
   const [showModal, setShowModal] = useState(false)
+  const [showImporter, setShowImporter] = useState(false)
   const [editLead, setEditLead] = useState<Lead | null>(null)
 
   const load = async () => {
@@ -55,9 +57,14 @@ export default function LeadsPage() {
           <h1 style={{ fontWeight: 800, fontSize: '1.4rem', color: '#0F172A' }}>Leads</h1>
           <p style={{ color: '#64748B', fontSize: '0.875rem', marginTop: 2 }}>{leads.length} leads en total</p>
         </div>
-        <button className="btn btn-primary" onClick={() => { setEditLead(null); setShowModal(true) }}>
-          <Plus size={16} /> Nuevo Lead
-        </button>
+        <div style={{ display: 'flex', gap: 12 }}>
+          <button className="btn btn-secondary" onClick={() => setShowImporter(true)} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <FileSpreadsheet size={16} /> Importar CSV
+          </button>
+          <button className="btn btn-primary" onClick={() => { setEditLead(null); setShowModal(true) }}>
+            <Plus size={16} /> Nuevo Lead
+          </button>
+        </div>
       </div>
 
       {/* Filters */}
@@ -209,6 +216,20 @@ export default function LeadsPage() {
             setShowModal(false)
           }}
         />
+      )}
+
+      {showImporter && (
+        <div style={{ 
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, 
+          background: 'rgba(15, 23, 42, 0.6)', backdropFilter: 'blur(4px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          zIndex: 1000, padding: 20
+        }}>
+          <LeadsImporter 
+            onImportComplete={() => load()} 
+            onClose={() => setShowImporter(false)} 
+          />
+        </div>
       )}
     </div>
   )

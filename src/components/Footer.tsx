@@ -1,7 +1,20 @@
-import { MapPin, Phone, Mail, Facebook, Instagram, Linkedin } from "lucide-react"
+import { useState } from "react"
+import { MapPin, Phone, Mail, Facebook, Instagram, Linkedin, Shield } from "lucide-react"
 import { Link } from "react-router-dom"
 
 export function Footer() {
+  const [isAdminMode, setIsAdminMode] = useState(false)
+
+  const handleCRMAccess = () => {
+    const password = prompt("Ingresa la contraseña de acceso al CRM:")
+    if (password === "tornillos2024") {
+      // Redirigir al CRM en producción
+      window.location.href = "https://tornillosam.vercel.app/crm"
+    } else if (password !== null) {
+      alert("Contraseña incorrecta.")
+    }
+  }
+
   return (
     <footer className="bg-white border-t border-slate-100 pt-16 pb-10 px-6">
       <div className="container mx-auto">
@@ -91,6 +104,13 @@ export function Footer() {
         <div className="pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400">
           <p>© 2024 Tornillos AM Industrial. Todos los derechos reservados.</p>
           <div className="flex items-center gap-6">
+            <button 
+              onClick={handleCRMAccess}
+              className="hover:text-slate-600 flex items-center gap-1 transition-colors"
+            >
+              <Shield className="w-3 h-3" />
+              Acceso Staff
+            </button>
             <a href="#" className="hover:text-slate-600">Aviso de Privacidad</a>
             <a href="#" className="hover:text-slate-600">Términos y Condiciones</a>
           </div>
