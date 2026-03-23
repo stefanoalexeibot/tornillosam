@@ -1,7 +1,11 @@
 {
   "rewrites": [
     {
-      "source": "/crm/:path*",
+      "source": "/crm/:path((?!assets/|.*\\..*).*)",
+      "destination": "/crm/index.html"
+    },
+    {
+      "source": "/crm",
       "destination": "/crm/index.html"
     },
     {
