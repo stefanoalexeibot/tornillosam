@@ -48,7 +48,7 @@ function App() {
 
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/crm">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           
