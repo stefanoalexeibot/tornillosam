@@ -17,6 +17,8 @@ export interface Lead {
   notas?: string
   avatar_url?: string
   prioridad: PrioridadLead
+  automation_enabled?: boolean
+  last_followup_at?: string
   created_at: string
   updated_at: string
 }

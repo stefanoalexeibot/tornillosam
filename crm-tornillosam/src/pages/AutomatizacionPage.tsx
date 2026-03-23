@@ -38,6 +38,14 @@ export default function AutomatizacionPage() {
             action: 'Ver guía',
             url: 'https://openai.com',
           },
+          {
+            title: '📧 Seguimiento Automático',
+            desc: 'Envía correos de seguimiento cada 3, 7 y 15 días después de enviar una propuesta.',
+            status: 'Configurable vía n8n',
+            statusColor: '#3B82F6',
+            action: 'Configurar',
+            url: 'https://n8n.io',
+          },
         ].map(item => (
           <div key={item.title} className="glass-card" style={{ padding: 20 }}>
             <div style={{ fontSize: '1.3rem', marginBottom: 10 }}>{item.title.split(' ')[0]}</div>

@@ -45,6 +45,23 @@ export async function updateLead(id: string, updates: Partial<Lead>) {
     .select()
     .single()
   if (error) throw error
+
+  // Trigger n8n webhook if automation is active or status moved to proposal
+  if (updates.estado === 'propuesta' || updates.automation_enabled) {
+    const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL
+    if (webhookUrl) {
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event: 'lead_update',
+          lead: data,
+          timestamp: new Date().toISOString()
+        })
+      }).catch(err => console.error('Error triggering n8n:', err))
+    }
+  }
+
   return data as Lead
 }
 
