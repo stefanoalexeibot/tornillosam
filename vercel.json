@@ -1,7 +1,11 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/crm/:path*",
+      "destination": "/crm/index.html"
+    },
+    {
+      "source": "/((?!crm).*)",
       "destination": "/index.html"
     }
   ]
