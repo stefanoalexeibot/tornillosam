@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  DndContext, DragOverlay, closestCorners, PointerSensor, useSensor, useSensors
+  DndContext, DragOverlay, closestCorners, PointerSensor, useSensor, useSensors, KeyboardSensor
 } from '@dnd-kit/core'
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, verticalListSortingStrategy, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { useDroppable } from '@dnd-kit/core'
 import { getLeads, updateLeadEstado } from '../services/leads'
 import { supabase } from '../lib/supabase'
@@ -11,10 +11,8 @@ import type { Lead, EstadoLead } from '../types'
 import { ESTADOS } from '../types'
 import KanbanCard from '../components/KanbanCard'
 import LeadModal from '../components/LeadModal'
-import { Plus, RefreshCw } from 'lucide-react'
+import { Plus, RefreshCw, Layers } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
-
-const PIPELINE_STAGES: EstadoLead[] = ['conectado', 'respondio', 'llamada', 'propuesta', 'cliente']
 
 function DroppableColumn({
   estado, leads, onLeadClick
@@ -24,31 +22,33 @@ function DroppableColumn({
   onLeadClick: (l: Lead) => void
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: estado.value })
+  
   return (
     <div
       ref={setNodeRef}
-      className="stage-column"
+      className={`stage-column ${isOver ? 'drop-indicator' : ''}`}
       style={{
-        background: isOver ? '#EFF6FF' : '#F8FAFC',
-        borderColor: isOver ? '#93C5FD' : '#E2E8F0',
         padding: '0 0 12px',
+        transition: 'all 0.3s ease',
+        border: isOver ? '2px dashed var(--primary)' : '1px solid var(--border)'
       }}
     >
       {/* Column header */}
       <div style={{
-        padding: '14px 14px 12px',
-        borderBottom: '1px solid #E2E8F0',
-        marginBottom: 10,
+        padding: '16px 18px 14px',
+        borderBottom: '1px solid var(--border)',
+        marginBottom: 12,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        background: 'rgba(255,255,255,0.3)'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{ width: 10, height: 10, borderRadius: '50%', background: estado.color }} />
-          <span style={{ fontWeight: 700, fontSize: '0.8rem', color: '#0F172A' }}>{estado.label}</span>
+          <span style={{ fontWeight: 800, fontSize: '0.85rem', color: '#0F172A', letterSpacing: '-0.01em' }}>{estado.label}</span>
         </div>
         <span style={{
-          background: estado.bg, color: estado.color,
-          borderRadius: '9999px', padding: '2px 8px',
-          fontSize: '0.72rem', fontWeight: 700,
+          background: `${estado.color}15`, color: estado.color,
+          borderRadius: 10, padding: '2px 8px',
+          fontSize: '0.75rem', fontWeight: 800,
         }}>
           {leads.length}
         </span>
@@ -56,13 +56,13 @@ function DroppableColumn({
 
       {/* Cards container with scroll */}
       <div style={{ 
-        padding: '0 10px', 
+        padding: '4px 12px', 
         display: 'flex', 
         flexDirection: 'column', 
-        gap: 8,
-        maxHeight: 'calc(100vh - 200px)',
+        gap: 12,
+        maxHeight: 'calc(100vh - 220px)',
         overflowY: 'auto',
-        paddingBottom: 10
+        paddingBottom: 20
       }}>
         <SortableContext items={leads.map(l => l.id)} strategy={verticalListSortingStrategy}>
           {leads.map(lead => (
@@ -71,11 +71,12 @@ function DroppableColumn({
         </SortableContext>
         {leads.length === 0 && (
           <div style={{
-            padding: '20px 12px', textAlign: 'center',
-            color: '#CBD5E1', fontSize: '0.8rem',
-            border: '2px dashed #E2E8F0', borderRadius: 10,
+            padding: '32px 16px', textAlign: 'center',
+            color: '#94A3B8', fontSize: '0.85rem',
+            border: '2px dashed #E2E8F0', borderRadius: 20,
+            background: 'rgba(255,255,255,0.2)'
           }}>
-            Sin leads
+            Arrastra aquí
           </div>
         )}
       </div>
@@ -90,15 +91,17 @@ export default function PipelinePage() {
   const [activeId, setActiveId] = useState<string | null>(null)
   const [showModal, setShowModal] = useState(false)
   const { user } = useAuth()
-  const sensors = useSensors(useSensor(PointerSensor, { 
-    activationConstraint: { distance: 5 } 
-  }))
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  )
 
   const load = async () => {
     if (!user) return
     try {
       setLoading(true)
-      const data = await getLeads(user.id)
+      const data = await getLeads()
       setLeads(data.filter(l => l.estado !== 'archivado'))
     } finally {
       setLoading(false)
@@ -106,11 +109,8 @@ export default function PipelinePage() {
   }
 
   useEffect(() => {
-    if (user) {
-      load()
-    }
+    if (user) load()
     
-    // Subscribe only to changes for THIS user's leads
     const channel = supabase
       .channel(`pipeline-leads-${user?.id}`)
       .on('postgres_changes', { 
@@ -118,15 +118,11 @@ export default function PipelinePage() {
         schema: 'public', 
         table: 'leads',
         filter: user ? `user_id=eq.${user.id}` : undefined
-      }, () => {
-        load()
-      })
+      }, () => load())
       .subscribe()
 
-    return () => {
-      supabase.removeChannel(channel)
-    }
-  }, [])
+    return () => { supabase.removeChannel(channel) }
+  }, [user])
 
   const getByStage = (estado: EstadoLead) => leads.filter(l => l.estado === estado)
   const activeCard = activeId ? leads.find(l => l.id === activeId) : null
@@ -139,13 +135,13 @@ export default function PipelinePage() {
     if (!over) return
     const lead = leads.find(l => l.id === active.id)
     const newEstado = over.id as EstadoLead
-    if (!lead || lead.estado === newEstado || !PIPELINE_STAGES.includes(newEstado)) return
+    if (!lead || lead.estado === newEstado) return
+    
     // Optimistic update
     setLeads(prev => prev.map(l => l.id === lead.id ? { ...l, estado: newEstado } : l))
     try {
       await updateLeadEstado(lead.id, newEstado)
     } catch {
-      // Revert
       setLeads(prev => prev.map(l => l.id === lead.id ? { ...l, estado: lead.estado } : l))
     }
   }
@@ -153,25 +149,25 @@ export default function PipelinePage() {
   const handleLeadClick = (lead: Lead) => navigate(`/leads/${lead.id}`)
 
   return (
-    <div style={{ padding: '28px 28px 0', minHeight: '100vh' }}>
+    <div style={{ padding: '24px 24px 80px', minHeight: '100vh', maxWidth: 1600, margin: '0 auto' }}>
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32 }} className="animate-premium">
         <div>
-          <h1 style={{ fontWeight: 800, fontSize: '1.4rem', color: '#0F172A' }}>Pipeline de Ventas</h1>
-          <p style={{ color: '#64748B', fontSize: '0.875rem', marginTop: 2 }}>
-            Arrastra las tarjetas para avanzar leads en el pipeline
+          <h1 style={{ fontWeight: 800, fontSize: '1.7rem', color: '#0F172A', letterSpacing: '-0.03em' }}>Flujo de Ventas</h1>
+          <p style={{ color: '#64748B', fontSize: '1rem', marginTop: 4 }}>
+            Organiza y gestiona tus oportunidades de negocio.
           </p>
         </div>
-        <div style={{ display: 'flex', gap: 10 }}>
-          <button className="btn btn-ghost" onClick={load}><RefreshCw size={15} /> Actualizar</button>
-          <button className="btn btn-primary" onClick={() => setShowModal(true)}><Plus size={16} /> Nuevo Lead</button>
+        <div style={{ display: 'flex', gap: 12 }} className="desktop-only">
+          <button className="btn btn-ghost" onClick={load} style={{ borderRadius: 16 }}><RefreshCw size={16} /> Refrescar</button>
+          <button className="btn btn-primary" onClick={() => setShowModal(true)} style={{ borderRadius: 16 }}><Plus size={18} /> Nuevo Lead</button>
         </div>
       </div>
 
       {loading ? (
-        <div style={{ display: 'flex', gap: 16, overflowX: 'auto', paddingBottom: 24 }}>
-          {PIPELINE_STAGES.map(s => (
-            <div key={s} className="stage-column skeleton" style={{ height: 400 }} />
+        <div style={{ display: 'flex', gap: 24, overflowX: 'auto', paddingBottom: 24 }}>
+          {ESTADOS.filter(e => e.value !== 'archivado').map(s => (
+            <div key={s.value} className="stage-column skeleton" style={{ height: 500, minWidth: 320, borderRadius: 28 }} />
           ))}
         </div>
       ) : (
@@ -181,29 +177,31 @@ export default function PipelinePage() {
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
-        <div style={{ 
-          display: 'flex', 
-          gap: 16, 
-          overflowX: 'auto', 
-          paddingBottom: 28, 
-          alignItems: 'flex-start',
-          scrollSnapType: 'x mandatory',
-          padding: '0 4px'
-        }}>
-            {PIPELINE_STAGES.map(stage => {
-              const estadoInfo = ESTADOS.find(e => e.value === stage)!
-              return (
-                <DroppableColumn
-                  key={stage}
-                  estado={estadoInfo}
-                  leads={getByStage(stage)}
-                  onLeadClick={handleLeadClick}
-                />
-              )
-            })}
+          <div style={{ 
+            display: 'flex', 
+            gap: 24, 
+            overflowX: 'auto', 
+            paddingBottom: 40, 
+            alignItems: 'flex-start',
+            scrollSnapType: 'x mandatory',
+            padding: '0 4px',
+            minHeight: 'calc(100vh - 250px)'
+          }}>
+            {ESTADOS.filter(e => e.value !== 'archivado').map(stage => (
+              <DroppableColumn
+                key={stage.value}
+                estado={stage}
+                leads={getByStage(stage.value as EstadoLead)}
+                onLeadClick={handleLeadClick}
+              />
+            ))}
           </div>
-          <DragOverlay>
-            {activeCard && <KanbanCard lead={activeCard} onClick={() => {}} />}
+          <DragOverlay dropAnimation={null}>
+            {activeCard ? (
+              <div className="drag-shadow" style={{ cursor: 'grabbing' }}>
+                <KanbanCard lead={activeCard} onClick={() => {}} />
+              </div>
+            ) : null}
           </DragOverlay>
         </DndContext>
       )}

@@ -1,146 +1,105 @@
 import { Link, useLocation } from 'react-router-dom'
-import {
-  LayoutDashboard, Users, Kanban, PlusCircle, Zap, Settings, TrendingUp,
-  Sun, Moon, LogOut, User
-} from 'lucide-react'
+import { LayoutDashboard, Users, Kanban, Settings, LogOut, ChevronRight, Search } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
 
-const navItems = [
-  { icon: LayoutDashboard, label: 'Dashboard', to: '/' },
-  { icon: Kanban, label: 'Pipeline', to: '/pipeline' },
-  { icon: Users, label: 'Leads', to: '/leads' },
-  { icon: TrendingUp, label: 'Métricas', to: '/metricas' },
-]
+export default function Sidebar() {
+  const location = useLocation()
+  const { signOut, user } = useAuth()
 
-interface Props {
-  onToggleDark?: () => void
-  isDark?: boolean
-}
-
-export default function Sidebar({ onToggleDark, isDark }: Props) {
-  const { pathname } = useLocation()
-  const { user, signOut } = useAuth()
+  const links = [
+    { to: '/', icon: <LayoutDashboard size={18} />, label: 'Dashboard' },
+    { to: '/leads', icon: <Users size={18} />, label: 'Leads' },
+    { to: '/pipeline', icon: <Kanban size={18} />, label: 'Pipeline' },
+    { to: '/automatizacion', icon: <Settings size={18} />, label: 'Configuración' },
+  ]
 
   return (
     <aside className="sidebar desktop-only">
-      {/* Logo */}
-      <div style={{
-        padding: '20px 20px 16px',
-        borderBottom: '1px solid var(--border)',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{
-            width: 36, height: 36,
+      <div style={{ padding: '0 8px 32px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <div style={{ 
+            width: 44, height: 44, borderRadius: 14, 
             background: 'linear-gradient(135deg, #2563EB, #6366F1)',
-            borderRadius: 10,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <span style={{ fontSize: 18 }}>🔩</span>
-          </div>
+            color: 'white', fontWeight: 900, fontSize: '1.3rem',
+            boxShadow: '0 8px 16px rgba(37, 99, 235, 0.2)'
+          }}>T</div>
           <div>
-            <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text)' }}>Tornillos AM</div>
-            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 500 }}>CRM de Ventas</div>
+            <div style={{ fontWeight: 800, fontSize: '1.1rem', color: '#0F172A', lineHeight: 1, letterSpacing: '-0.02em' }}>Tornillos AM</div>
+            <div style={{ fontSize: '0.7rem', color: '#3B82F6', fontWeight: 700, marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Sistema CRM</div>
           </div>
         </div>
       </div>
 
-      {/* Nav */}
-      <nav style={{ padding: '12px 12px', flex: 1, overflowY: 'auto' }}>
-        <div style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '0 8px', marginBottom: 8 }}>
-          Principal
+      {/* Global Search Mockup */}
+      <div style={{ marginBottom: 28, padding: '0 8px' }}>
+        <div style={{ 
+          display: 'flex', alignItems: 'center', gap: 10, 
+          padding: '12px 14px', borderRadius: 16, border: '1px solid #F1F5F9',
+          background: '#F8FAFC', color: '#94A3B8',
+          cursor: 'text'
+        }}>
+          <Search size={16} />
+          <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>Buscar lead...</span>
+          <div style={{ 
+            marginLeft: 'auto', border: '1px solid #E2E8F0', padding: '2px 6px', 
+            borderRadius: 8, fontSize: '0.65rem', background: 'white', fontWeight: 700, color: '#64748B' 
+          }}>⌘K</div>
         </div>
-        {navItems.map(({ icon: Icon, label, to }) => {
-          const active = pathname === to || (to !== '/' && pathname.startsWith(to))
-          return (
-            <Link key={to} to={to} className={`nav-item ${active ? 'active' : ''}`}>
-              <Icon size={17} />
-              {label}
-            </Link>
-          )
-        })}
+      </div>
 
-        <div style={{ height: 1, background: 'var(--border)', margin: '16px 8px' }} />
-
-        <div style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '0 8px', marginBottom: 8 }}>
-          Acciones
-        </div>
-        <Link to="/leads/new" className="nav-item">
-          <PlusCircle size={17} />
-          Nuevo Lead
-        </Link>
-        <Link to="/automatizacion" className="nav-item">
-          <Zap size={17} />
-          Automatización
-        </Link>
-        <Link to="/configuracion" className="nav-item">
-          <Settings size={17} />
-          Configuración
-        </Link>
-
-        {/* Dark Mode Toggle */}
-        <div style={{ marginTop: 16 }}>
-          <button 
-            onClick={onToggleDark}
-            className="nav-item"
-            style={{ width: '100%', border: 'none', background: 'transparent', cursor: 'pointer', textAlign: 'left' }}
+      <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {links.map(link => (
+          <Link
+            key={link.to}
+            to={link.to}
+            className={`nav-item ${location.pathname === (link.to === '/' ? '/' : link.to) ? 'active' : ''}`}
+            style={{ position: 'relative', padding: '12px 16px' }}
           >
-            {isDark ? <Sun size={17} /> : <Moon size={17} />}
-            {isDark ? 'Modo Claro' : 'Modo Oscuro'}
-          </button>
-        </div>
+            {link.icon}
+            <span style={{ flex: 1 }}>{link.label}</span>
+            {location.pathname === (link.to === '/' ? '/' : link.to) && (
+              <ChevronRight size={14} style={{ opacity: 0.5 }} />
+            )}
+          </Link>
+        ))}
       </nav>
 
-      {/* User Section */}
-      <div style={{ padding: '12px 12px', borderTop: '1px solid var(--border)' }}>
+      {/* User profile section */}
+      <div style={{ marginTop: 'auto', padding: '24px 8px 0', borderTop: '1px solid #F1F5F9' }}>
         <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: 10, 
-          padding: '8px',
-          background: 'var(--surface-2)',
-          borderRadius: 12,
-          marginBottom: 10
+          display: 'flex', alignItems: 'center', gap: 12, 
+          padding: '12px', borderRadius: 20, background: '#F8FAFC',
+          border: '1px solid #F1F5F9'
         }}>
           <div style={{ 
-            width: 32, height: 32, 
-            borderRadius: '50%', 
-            background: '#E2E8F0', 
+            width: 40, height: 40, borderRadius: 12, background: 'white',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: '#64748B'
+            color: '#2563EB', fontWeight: 800, fontSize: '0.9rem',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.02)', border: '1px solid #E2E8F0'
           }}>
-            <User size={16} />
+            {user?.email?.[0].toUpperCase() || 'U'}
           </div>
-          <div style={{ overflow: 'hidden' }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ 
-              fontSize: '0.75rem', 
-              fontWeight: 600, 
-              color: 'var(--text)',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis'
+              fontSize: '0.85rem', fontWeight: 700, color: '#0F172A', 
+              whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+              lineHeight: 1.2
             }}>
               {user?.email?.split('@')[0]}
             </div>
-            <div style={{ 
-              fontSize: '0.65rem', 
-              color: 'var(--text-muted)',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis'
-            }}>
-              {user?.email}
-            </div>
+            <button 
+              onClick={() => signOut()}
+              style={{ 
+                background: 'none', border: 'none', padding: 0, color: '#EF4444', 
+                fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer', 
+                display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 
+              }}
+            >
+              <LogOut size={12} /> Cerrar Sesión
+            </button>
           </div>
         </div>
-        
-        <button 
-          onClick={signOut}
-          className="nav-item"
-          style={{ width: '100%', border: 'none', background: 'transparent', cursor: 'pointer', textAlign: 'left', color: '#EF4444' }}
-        >
-          <LogOut size={17} />
-          Cerrar Sesión
-        </button>
       </div>
     </aside>
   )
