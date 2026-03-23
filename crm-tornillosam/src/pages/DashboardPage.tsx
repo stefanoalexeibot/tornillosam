@@ -65,7 +65,7 @@ export default function DashboardPage() {
           </p>
         </div>
         <button 
-          className="btn btn-primary desktop-only" 
+          className="btn btn-primary hidden md:flex" 
           onClick={() => setShowModal(true)}
           style={{ padding: '12px 24px', borderRadius: 16 }}
         >
