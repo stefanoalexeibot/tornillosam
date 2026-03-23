@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { MapPin, Phone, Mail, Facebook, Instagram, Linkedin, Shield } from "lucide-react"
 import { Link } from "react-router-dom"
 
