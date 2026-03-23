@@ -3,8 +3,6 @@ import { MapPin, Phone, Mail, Facebook, Instagram, Linkedin, Shield } from "luci
 import { Link } from "react-router-dom"
 
 export function Footer() {
-  const [isAdminMode, setIsAdminMode] = useState(false)
-
   const handleCRMAccess = () => {
     const password = prompt("Ingresa la contraseña de acceso al CRM:")
     if (password === "tornillos2024") {
