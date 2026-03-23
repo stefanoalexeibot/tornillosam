@@ -21,42 +21,32 @@ export default function ConfiguracionPage() {
     setLoading(true)
     try {
       const email = user.email || ''
-      let count = 0
+      let leadsToInsert: any[] = []
       
-      // Initial leads for a.luna@tornillosam.com
-      if (email === 'a.luna@tornillosam.com') {
-        const { error } = await supabase.from('leads').insert([
-          { user_id: user.id, nombre: 'Alejandro Galván (CEMEX)', empresa: 'CEMEX', cargo: 'Comprador Industrial', estado: 'respondio', fuente: 'linkedin', prioridad: 'alta' },
-          { user_id: user.id, nombre: 'Roberto Soto (Ternium)', empresa: 'Ternium', cargo: 'Gerente Mantenimiento', estado: 'conectado', fuente: 'linkedin', prioridad: 'media' },
-          { user_id: user.id, nombre: 'Marcia Ruiz (Kia Motors)', empresa: 'Kia Motors', cargo: 'Procurement Specialist', estado: 'llamada', fuente: 'manual', prioridad: 'alta' },
-        ])
-        if (error) throw error
-        count = 3
-      }
-      // Initial leads for jluna@tornillosam.com
-      else if (email === 'jluna@tornillosam.com') {
-        const { error } = await supabase.from('leads').insert([
-          { user_id: user.id, nombre: 'Manuel Torres (Femsa)', empresa: 'Femsa', cargo: 'Facility Manager', estado: 'respondio', fuente: 'linkedin', prioridad: 'alta' },
-          { user_id: user.id, nombre: 'Sandra Luz (PepsiCo)', empresa: 'PepsiCo', cargo: 'Mantenimiento de Línea', estado: 'conectado', fuente: 'linkedin', prioridad: 'media' },
-        ])
-        if (error) throw error
-        count = 2
-      }
-      // Initial leads for dcanales@tornillosam.com
-      else if (email === 'dcanales@tornillosam.com') {
-        const { error } = await supabase.from('leads').insert([
-          { user_id: user.id, nombre: 'David Arriaga (MetalSa)', empresa: 'MetalSa', cargo: 'Ingeniero de Planta', estado: 'respondio', fuente: 'linkedin', prioridad: 'alta' },
-          { user_id: user.id, nombre: 'Gerardo Ortiz (Carrier)', empresa: 'Carrier', cargo: 'Purchasing', estado: 'llamada', fuente: 'webhook', prioridad: 'media' },
-        ])
-        if (error) throw error
-        count = 2
+      if (email === 'a.luna@tornillosam.com' || email === 'jluna@tornillosam.com' || email === 'dcanales@tornillosam.com') {
+        const prefix = email.split('@')[0].toUpperCase();
+        leadsToInsert = [
+          { user_id: user.id, nombre: `Cliente A1 (${prefix})`, empresa: 'CEMEX', cargo: 'Comprador Industrial', estado: 'conectado', fuente: 'linkedin', prioridad: 'alta' },
+          { user_id: user.id, nombre: `Cliente A2 (${prefix})`, empresa: 'Ternium', cargo: 'Gerente Mantenimiento', estado: 'conectado', fuente: 'linkedin', prioridad: 'media' },
+          { user_id: user.id, nombre: `Cliente A3 (${prefix})`, empresa: 'Kia Motors', cargo: 'Procurement Specialist', estado: 'respondio', fuente: 'manual', prioridad: 'alta' },
+          { user_id: user.id, nombre: `Cliente A4 (${prefix})`, empresa: 'Femsa', cargo: 'Facility Manager', estado: 'respondio', fuente: 'linkedin', prioridad: 'alta' },
+          { user_id: user.id, nombre: `Cliente A5 (${prefix})`, empresa: 'PepsiCo', cargo: 'Mantenimiento de Línea', estado: 'llamada', fuente: 'linkedin', prioridad: 'media' },
+          { user_id: user.id, nombre: `Cliente A6 (${prefix})`, empresa: 'MetalSa', cargo: 'Ingeniero de Planta', estado: 'llamada', fuente: 'linkedin', prioridad: 'alta' },
+          { user_id: user.id, nombre: `Cliente A7 (${prefix})`, empresa: 'Carrier', cargo: 'Purchasing', estado: 'propuesta', fuente: 'webhook', prioridad: 'media' },
+          { user_id: user.id, nombre: `Cliente A8 (${prefix})`, empresa: 'Alfa SAB', cargo: 'Comprador Gral', estado: 'propuesta', fuente: 'linkedin', prioridad: 'alta' },
+          { user_id: user.id, nombre: `Cliente A9 (${prefix})`, empresa: 'Vitro', cargo: 'Operaciones', estado: 'cliente', fuente: 'referido', prioridad: 'alta' },
+          { user_id: user.id, nombre: `Cliente A10 (${prefix})`, empresa: 'Bimbo', cargo: 'Logística', estado: 'conectado', fuente: 'linkedin', prioridad: 'baja' },
+        ]
       } else {
         alert('Este usuario no tiene un set de leads pre-definido. Puedes agregarlos manualmente en la sección de Leads.')
         setLoading(false)
         return
       }
 
-      alert(`¡Portal activado! Se han cargado ${count} leads estratégicos de LinkedIn a tu cuenta.`)
+      const { error } = await supabase.from('leads').insert(leadsToInsert)
+      if (error) throw error
+
+      alert(`¡Portal activado! Se han cargado 10 leads estratégicos de LinkedIn a tu cuenta.`)
     } catch (err: any) {
       alert('Error cargando leads: ' + err.message)
     } finally {

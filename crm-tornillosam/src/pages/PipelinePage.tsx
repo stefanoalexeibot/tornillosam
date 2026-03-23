@@ -53,8 +53,16 @@ function DroppableColumn({
         </span>
       </div>
 
-      {/* Cards */}
-      <div style={{ padding: '0 10px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+      {/* Cards container with scroll */}
+      <div style={{ 
+        padding: '0 10px', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        gap: 8,
+        maxHeight: 'calc(100vh - 200px)',
+        overflowY: 'auto',
+        paddingBottom: 10
+      }}>
         <SortableContext items={leads.map(l => l.id)} strategy={verticalListSortingStrategy}>
           {leads.map(lead => (
             <KanbanCard key={lead.id} lead={lead} onClick={onLeadClick} />
